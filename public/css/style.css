@@ -1,0 +1,44 @@
+:root{
+  --font-size-main: 13px;
+  --main-color: #0a0a0a;
+  --color-white: #f5f5f5;
+  --color-red: #f81610;
+}
+
+html, body{
+  font-size: var(--font-size-main);
+}
+
+.main-header .sidebar-toggle:before {
+  content: "";
+}
+.content-wrap {
+  min-height: 0 !important;
+  overflow: auto;
+}
+.login-box{
+  width: 60%;
+  margin: 0 auto;
+}
+#form-register label span{
+  color: var(--color-red);
+}
+
+@media (max-width: 376px){
+    :root{
+        --font-size-main: 10px;
+    }
+  .login-box{
+    width: 100%!important;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 768px) and (min-width: 376px){
+    :root{
+        --font-size-main: 12px;
+    }
+  .login-box{
+    width: 80%;
+    margin: 0 auto;
+  }
+}

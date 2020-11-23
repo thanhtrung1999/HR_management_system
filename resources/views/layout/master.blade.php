@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@yield('title')</title>
+    <base href="{{asset('')}}">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <!--    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">-->
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="css/_all-skins.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    @include('layout.header')
+    @include('layout.sidebar')
+    <div class="content-wrapper">
+        @if(session()->has('error'))
+            <div class="alert alert-danger">
+                <h4 style="margin: 0">{{session('error')}}</h4>
+            </div>
+        @endif
+        @if(session()->has('success'))
+            <div class="alert alert-success">
+                <h4 style="margin: 0">{{session('success')}}</h4>
+            </div>
+        @endif
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                @yield('content')
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+
+    @include('layout.footer')
+    <!-- control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="js/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="js/jquery-ui.min.js"></script>
+<!-- Font Awesome 6 -->
+<script src="https://kit.fontawesome.com/5efd05f2e8.js" crossorigin="anonymous"></script>
+<!-- Bootstrap 4 -->
+<script src="js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<!--<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>-->
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+{{--<!--CKEditor -->
+<script src="ckeditor/ckeditor.js"></script>--}}
+<!--My SCRIPT-->
+<script src="js/script.js"></script>
+<!--<script src="js/sort.js"></script>-->
+<!-- page script -->
+<script>
+    $(function () {
+        $("#orders-table").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+        });
+        $('#products-table').DataTable({
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
+</body>
+</html>
