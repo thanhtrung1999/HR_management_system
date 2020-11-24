@@ -15,9 +15,10 @@ class CreateRootTable extends Migration
     {
         Schema::create('root', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username', 30);
+            $table->string('email', 50);
             $table->string('password', 100);
             $table->rememberToken();
+            $table->timestamps();
         });
     }
 

@@ -21,15 +21,16 @@ class CreateEmployeesTable extends Migration
             $table->string('password', 100);
             $table->rememberToken();
             $table->string('position', 30)->comment('Vị trí (Chức vụ trong công ty)');
-            $table->unsignedInteger('department_id');
+            $table->unsignedInteger('department_id')->nullable();
 //            $table->foreign('department_id')->references('id')->on('departments')->onDelete('set default');
             $table->string('avatar')->nullable();
             $table->tinyInteger('gender')->nullable()->default(1);
-            $table->date('birthday');
+            $table->date('birthday')->nullable();
             $table->string('phone_number', 20)->nullable();
             $table->string('address', 50)->nullable();
             $table->tinyInteger('user_type')->nullable()->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
