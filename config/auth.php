@@ -52,7 +52,7 @@ return [
             'provider' => 'root',
         ],
 
-        'employee' => [
+        'employees' => [
             'driver' => 'session',
             'provider' => 'employees',
         ],
@@ -119,6 +119,12 @@ return [
         ],
         'root' => [
             'provider' => 'root',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'employees' => [
+            'provider' => 'employees',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
