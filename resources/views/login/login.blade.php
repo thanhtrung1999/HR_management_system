@@ -14,11 +14,11 @@
 <form method="post" action="">
     @csrf
     <div class="form-group">
-        <label for="username">Email/username</label>
-        <input type="text" name="username" value="{{old('username')}}" id="username" class="form-control"/>
-        @if($errors->has('username'))
+        <label for="email">Email</label>
+        <input type="text" name="email" value="{{old('email')}}" id="email" class="form-control"/>
+        @if($errors->has('email'))
             <div class="alert alert-danger">
-                <strong>{{$errors->first('username')}}</strong>
+                <strong>{{$errors->first('email')}}</strong>
             </div>
         @endif
     </div>

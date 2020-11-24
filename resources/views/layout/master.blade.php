@@ -32,13 +32,13 @@
     @include('layout.sidebar')
     <div class="content-wrapper">
         @if(session()->has('error'))
-            <div class="alert alert-danger">
-                <h4 style="margin: 0">{{session('error')}}</h4>
+            <div class="alert alert-danger m-2">
+                <h5 style="margin: 0">{{session('error')}}</h5>
             </div>
         @endif
         @if(session()->has('success'))
-            <div class="alert alert-success">
-                <h4 style="margin: 0">{{session('success')}}</h4>
+            <div class="alert alert-success m-2">
+                <h5 style="margin: 0">{{session('success')}}</h5>
             </div>
         @endif
 

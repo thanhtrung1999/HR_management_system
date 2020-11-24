@@ -6,7 +6,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="" class="nav-link">Home</a>
+            @yield('breadcrumb')
         </li>
     </ul>
 
@@ -23,7 +23,11 @@
                 <li class="user-header">
                     <img src="http://www.clker.com/cliparts/d/L/P/X/z/i/no-image-icon-hi.png" class="img-circle" alt="User Image">
 
-                    <p>{{strtoupper(auth('root')->user()->username)}}</p>
+                    @if(auth('root')->check())
+                        <p>{{auth('root')->user()->email}}</p>
+                    @else
+                        <p>{{auth('employees')->user()->first_name}} {{auth('employees')->user()->last_name}}</p>
+                    @endif
                 </li>
                 <!-- Menu Footer-->
                 <li class="user-footer">
