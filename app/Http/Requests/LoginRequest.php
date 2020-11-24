@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required',
+            'email' => 'required|email',
             'password' => 'required|min:3',
             'type' => 'required'
         ];
@@ -33,7 +33,8 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'username.required' => 'Không được để trống',
+            'email.required' => 'Không được để trống',
+            'email.email' => 'Email sai định dạng',
             'password.required' => 'Không được để trống',
             'password.min' => 'Password không được nhỏ hơn 3 ký tự',
             'type.required' => 'Hãy chọn Root hoặc Nhân viên'
