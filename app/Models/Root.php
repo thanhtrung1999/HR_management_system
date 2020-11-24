@@ -14,7 +14,7 @@ class Root extends Authenticatable
     protected $guarded = 'root';
 
     protected $fillable = [
-        'username', 'password'
+        'email', 'password'
     ];
 
     protected $hidden = [
