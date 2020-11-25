@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Root;
 use App\Models\Employee;
 use App\Models\Department;
+use App\Http\Requests\CreateEmployeeRequest;
+use App\Http\Requests\EditEmployeeRequest;
 use App\Http\Requests\CreateDepartmentRequest;
+use App\Http\Requests\EditDepartmentRequest;
 
 class RootController extends Controller
 {
@@ -40,11 +43,34 @@ class RootController extends Controller
     }
 
     public function createEmployee(){
-        return 'Đây là trang thêm nhân viên';
+        $departments = $this->departmentModel->getListDepartments();
+        return view('root.employees.create', [
+            'departments' => $departments
+        ]);
     }
 
-    public function updateEmployee(){
-        return 'Đây là trang sửa nhân viên';
+    public function postCreateEmployee(CreateEmployeeRequest $request){
+        $this->employeeModel->addNewEmployee($request);
+        return redirect('root/employees')->with('success', 'Thêm nhân viên thành công');
+    }
+
+    public function updateEmployee($id){
+        $departments = $this->departmentModel->getListDepartments();
+        $employee = $this->employeeModel->getEmployeeById($id);
+        return view('root.employees.update', [
+            'departments' => $departments,
+            'employee' => $employee
+        ]);
+    }
+
+    public function postUpdateEmployee(EditEmployeeRequest $request, $id){
+        $this->employeeModel->editEmployee($request, $id);
+        return redirect('root/employees')->with('success', 'Sửa nhân viên thành công');
+    }
+
+    public function deleteEmployee($id){
+        $this->employeeModel->deleteEmployee($id);
+        return redirect()->back()->with('success', 'Xóa nhân viên thành công');
     }
 
     public function createDepartment(){
@@ -55,10 +81,39 @@ class RootController extends Controller
     }
 
     public function getCreateDepartment(CreateDepartmentRequest $request){
-        dd($request);
+        $manager_id = $request->manager;
+        $checkManagerManagedDepartment = $this->departmentModel->checkManagerManagedDepartment($manager_id);
+        if($checkManagerManagedDepartment === 0){
+            $this->departmentModel->addNewDepartment($request);
+            return redirect('root/departments')->with('success', 'Thêm phòng ban thành công');
+        } else {
+            session()->flash('error', 'Trưởng phòng này đã quản lý 1 phòng ban');
+            return redirect()->back();
+        }
     }
 
-    public function updateDepartment(){
-        return 'Đây là trang sửa phòng ban';
+    public function updateDepartment($id){
+        $department = $this->departmentModel->getDepartmentById($id);
+        $managers = $this->employeeModel->getEmployeesIsManager();
+        return view('root.departments.update', [
+            'department' => $department,
+            'managers' => $managers
+        ]);
+    }
+
+    public function postUpdateDepartment(EditDepartmentRequest $request, $id){
+        $checkManagerManagedDepartment = $this->departmentModel->checkManagerManagedDepartmentExceptMyself($request);
+        if($checkManagerManagedDepartment === 0){
+            $this->departmentModel->editDepartment($request);
+            return redirect('root/departments')->with('success', 'Sửa phòng ban thành công');
+        } else {
+            session()->flash('error', 'Trưởng phòng này đã quản lý 1 phòng ban');
+            return redirect()->back();
+        }
+    }
+
+    public function deleteDepartment($id){
+        $this->departmentModel->deleteDepartment($id);
+        return redirect()->back()->with('success', 'Xóa phòng ban thành công');
     }
 }

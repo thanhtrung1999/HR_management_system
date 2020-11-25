@@ -29,8 +29,8 @@
                         <td>{{$department->created_at}}</td>
                         <td>{{$department->updated_at}}</td>
                         <td>
-                            <a title="Update" href="{{route('updateDepartment')}}"><i class="fa fa-pencil-alt"></i></a> &nbsp;&nbsp;
-                            <a title="Xóa" href="" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i
+                            <a title="Update" href="{{route('updateDepartment', ['id'=>$department->id])}}"><i class="fa fa-pencil-alt"></i></a> &nbsp;&nbsp;
+                            <a title="Xóa" href="{{route('deleteDepartment', ['id'=>$department->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i
                                     class="fa fa-trash"></i></a>
                         </td>
                     </tr>

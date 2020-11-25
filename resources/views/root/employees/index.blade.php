@@ -12,13 +12,14 @@
             <thead>
             <tr>
                 <th style="width: 2%;" scope="col">ID</th>
-                <th style="width: 12%;" scope="col">Họ và tên</th>
-                <th style="width: 12%" scope="col">Email</th>
-                <th style="width: 10%" scope="col">Chức vụ (Vị trí)</th>
-                <th style="width: 10%" scope="col">Phòng ban (Bộ phận)</th>
+                <th style="width: 10%;" scope="col">Họ và tên</th>
+                <th style="width: 10%" scope="col">Email</th>
+                <th style="width: 8%" scope="col">Chức vụ (Vị trí)</th>
+                <th style="width: 8%" scope="col">Phòng ban (Bộ phận)</th>
                 <th style="width: 8%" scope="col">Avatar</th>
-                <th style="width: 6%;" scope="col">Giới tính</th>
+                <th style="width: 6%" scope="col">Giới tính</th>
                 <th style="width: 8%" scope="col">Số điện thoại</th>
+                <th style="width: 8%" scope="col">Địa chỉ</th>
                 <th style="width: 8%" scope="col">Cấp độ</th>
                 <th style="width: 8%" scope="col">Ngày tạo</th>
                 <th style="width: 8%" scope="col">Ngày cập nhật gần nhất</th>
@@ -41,6 +42,7 @@
                             <td>Nữ</td>
                         @endif
                         <td>{{$employee->phone_number}}</td>
+                        <td>{{$employee->address}}</td>
                         @if($employee->user_type == 0)
                             <td>Nhân viên</td>
                         @else
@@ -49,8 +51,8 @@
                         <td>{{$employee->created_at}}</td>
                         <td>{{$employee->updated_at}}</td>
                         <td>
-                            <a title="Update" href="{{route('updateEmployee')}}"><i class="fa fa-pencil-alt"></i></a> &nbsp;&nbsp;
-                            <a title="Xóa" href="" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i
+                            <a title="Update" href="{{route('updateEmployee', ['id'=>$employee->id])}}"><i class="fa fa-pencil-alt"></i></a> &nbsp;&nbsp;
+                            <a title="Xóa" href="{{route('deleteEmployee', ['id'=>$employee->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i
                                     class="fa fa-trash"></i></a>
                         </td>
                     </tr>
@@ -58,5 +60,8 @@
             @endif
             </tbody>
         </table>
+        <div align='right'>
+            {!! $employees->links() !!}
+        </div>
     </div>
 @endsection
