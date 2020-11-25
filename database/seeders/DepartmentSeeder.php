@@ -16,8 +16,11 @@ class DepartmentSeeder extends Seeder
     {
         DB::table('departments')->delete();
         DB::table('departments')->insert([
-            ['id' => 1, 'name' => 'Division 1', 'employee_id' => 1],
-            ['id' => 2, 'name' => 'Division 2', 'employee_id' => 0]
+            ['id' => 1, 'name' => 'Division 1'],
+            ['id' => 2, 'name' => 'Division 2'],
+            ['id' => 3, 'name' => 'BOD'],
+            ['id' => 4, 'name' => 'BOD/Division 1'],
+            ['id' => 5, 'name' => 'BOD/Division 2'],
         ]);
     }
 }
