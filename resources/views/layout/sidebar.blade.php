@@ -98,7 +98,7 @@
                     </li>
                     @if(auth('employees')->user()->user_type == 1)
                         <li class="nav-item @yield('active-link-list-employees')">
-                            <a class="nav-link" href="{{route('list-employee')}}">
+                            <a class="nav-link" href="{{route('list-employees')}}">
                                 <i class="fa fa-th"></i> <span>Quản lý nhân viên</span>
                                 <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->

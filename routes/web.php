@@ -24,13 +24,18 @@ Route::group(['prefix' => 'root', 'middleware' => 'checkRootLogin'], function ()
     Route::group(['prefix' => 'employees'], function (){
         Route::get('/', [RootController::class, 'employees']);
         Route::get('create', [RootController::class, 'createEmployee'])->name('createEmployee');
-        Route::get('update', [RootController::class, 'updateEmployee'])->name('updateEmployee');
+        Route::post('create', [RootController::class, 'postCreateEmployee'])->name('postCreateEmployee');
+        Route::get('update/{id}', [RootController::class, 'updateEmployee'])->name('updateEmployee');
+        Route::post('update/{id}', [RootController::class, 'postUpdateEmployee'])->name('postUpdateEmployee');
+        Route::get('delete/{id}', [RootController::class, 'deleteEmployee'])->name('deleteEmployee');
     });
     Route::group(['prefix' => 'departments'], function (){
         Route::get('/', [RootController::class, 'departments']);
         Route::get('create', [RootController::class, 'createDepartment'])->name('createDepartment');
         Route::get('get-create', [RootController::class, 'getCreateDepartment'])->name('getCreateDepartment');
-        Route::get('update', [RootController::class, 'updateDepartment'])->name('updateDepartment');
+        Route::get('update/{id}', [RootController::class, 'updateDepartment'])->name('updateDepartment');
+        Route::post('update/{id}', [RootController::class, 'postUpdateDepartment'])->name('postUpdateDepartment');
+        Route::get('delete/{id}', [RootController::class, 'deleteDepartment'])->name('deleteDepartment');
     });
     Route::get('requests', [RootController::class, 'requests']);
 });
@@ -48,3 +53,5 @@ Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], fun
     });
     Route::get('requests-approval', [\App\Http\Controllers\EmployeeController::class, 'getRequestsApproval']);
 });
+
+Route::get('send-email-verified-acc/{email}', [\App\Http\Controllers\MailController::class, 'sendMailVerified']);
