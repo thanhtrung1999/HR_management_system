@@ -30,7 +30,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item @yield('active-link-employees')">
-                    <a class="nav-link" href="root/employees">
+                    <a class="nav-link" href="{{route('employees.index')}}">
                         <i class="fa fa-th"></i> <span>Quản lý nhân viên</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -38,7 +38,7 @@
                     </a>
                 </li>
                 <li class="nav-item @yield('active-link-departments')">
-                    <a class="nav-link" href="root/departments">
+                    <a class="nav-link" href="{{route('departments.index')}}">
                         <i class="fa fa-code"></i> <span>Quản lý phòng ban</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -46,7 +46,7 @@
                     </a>
                 </li>
                 <li class="nav-item @yield('active-link-requests')">
-                    <a class="nav-link" href="root/requests">
+                    <a class="nav-link" href="{{route('requests.index')}}">
                         <i class="fas fa-images" style="width: 20px" aria-hidden="true"></i> <span>Yêu cầu cần duyệt</span>
                         <span class="pull-right-container"></span>
                     </a>

@@ -19,7 +19,7 @@ class AuthLogout
     {
         if(Auth::guard('root')->check()){
             session()->flash('error', 'Vui lòng đăng xuất để trở lại trang đăng nhập');
-            return redirect('root/employees');
+            return redirect()->route('employees.index');
         } else if (Auth::guard('employees')->check()){
             session()->flash('error', 'Vui lòng đăng xuất để trở lại trang đăng nhập');
             return redirect('/');

@@ -23,6 +23,19 @@ html, body{
 #form-register label span{
   color: var(--color-red);
 }
+.table-content .form-btn-delete{
+    display: inline-block;
+}
+.table-content .form-btn-delete .btn-delete-record{
+    background: none;
+    border: none;
+    outline: none;
+}
+.table-content .form-btn-delete .btn-delete-record:focus{
+    background: none;
+    border: none;
+    outline: none;
+}
 
 @media (max-width: 376px){
     :root{

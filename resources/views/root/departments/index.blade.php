@@ -1,12 +1,12 @@
 @extends('layout.master')
 @section('title', 'Quản lý phòng ban')
 @section('breadcrumb')
-    <a href="root/departments" class="nav-link">Quản lý phòng ban</a>
+    <a href="{{route('departments.index')}}" class="nav-link">Quản lý phòng ban</a>
 @endsection
 @section('active-link-departments', 'active')
 @section('content')
     <h2>Danh sách phòng ban</h2>
-    <a href="{{route('createDepartment')}}" class="btn btn-success">+ New Department</a>
+    <a href="{{route('departments.create')}}" class="btn btn-success">+ New Department</a>
     <div class="table-content mt-4">
         <table class="table table-hover table-bordered">
             <thead>
@@ -29,9 +29,13 @@
                         <td>{{$department->created_at}}</td>
                         <td>{{$department->updated_at}}</td>
                         <td>
-                            <a title="Update" href="{{route('updateDepartment', ['id'=>$department->id])}}"><i class="fa fa-pencil-alt"></i></a> &nbsp;&nbsp;
-                            <a title="Xóa" href="{{route('deleteDepartment', ['id'=>$department->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i
-                                    class="fa fa-trash"></i></a>
+                            <a title="Update" href="{{route('departments.edit', ['department'=>$department->id])}}"><i class="fa fa-pencil-alt"></i></a> &nbsp;&nbsp;
+                            <form class="form-btn-delete" action="{{route('departments.destroy', ['department'=>$department->id])}}">
+                                @method('DELETE')
+                                @csrf
+                                <button class="btn-delete-record" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i
+                                        class="fa fa-trash"></i></button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

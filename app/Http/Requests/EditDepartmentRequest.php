@@ -24,7 +24,7 @@ class EditDepartmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'department_name' => 'required|unique:departments,name,'.$this->id,
+            'department_name' => 'required|unique:departments,name,'.$this->department,
             'manager' => 'required|gt:0'
         ];
     }

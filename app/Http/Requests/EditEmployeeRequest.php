@@ -26,7 +26,7 @@ class EditEmployeeRequest extends FormRequest
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique:employees,email,'.$this->id,
+            'email' => 'required|email|unique:employees,email,'.$this->employee,
             'password' => 'nullable|min:3',
             'department_id' => 'required|gt:0',
         ];

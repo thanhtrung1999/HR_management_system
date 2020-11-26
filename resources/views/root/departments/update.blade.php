@@ -1,16 +1,17 @@
 @extends('layout.master')
 @section('title', 'Sửa phòng ban')
 @section('breadcrumb')
-    <a href="root/departments" class="pr-2 nav-link d-inline-block">Quản lý phòng ban</a>
+    <a href="{{route('departments.index')}}" class="pr-2 nav-link d-inline-block">Quản lý phòng ban</a>
     <i class="fas fa-chevron-right"></i>
-    <a href="{{route('updateDepartment', ['id'=>$department->id])}}" class="pl-2 nav-link d-inline-block">Sửa phòng ban</a>
+    <a href="{{route('departments.edit', ['department'=>$department->id])}}" class="pl-2 nav-link d-inline-block">Sửa phòng ban</a>
 @endsection
 @section('active-link-departments', 'active')
 @section('content')
     <h2>Sửa phòng ban (bộ phận)</h2>
     <div class="form-content mt-4">
-        <form action="{{route('postUpdateDepartment', ['id'=>$department->id])}}" method="post">
+        <form action="{{route('departments.update', ['department'=>$department->id])}}" method="post">
             @csrf
+            @method('PUT')
             <div class="form-group">
                 <input class="form-control" placeholder="Tên phòng ban (Bộ phận)" type="text" name="department_name" id="department-name" value="@if(isset($_POST['submit'])) {{old('department_name')}} @else {{$department->name}} @endif">
                 @if($errors->has('department_name'))

@@ -1,15 +1,15 @@
 @extends('layout.master')
 @section('title', 'Thêm nhân viên')
 @section('breadcrumb')
-    <a href="root/employees" class="pr-2 nav-link d-inline-block">Quản lý nhân viên</a>
+    <a href="{{route('employees.index')}}" class="pr-2 nav-link d-inline-block">Quản lý nhân viên</a>
     <i class="fas fa-chevron-right"></i>
-    <a href="{{route('createEmployee')}}" class="pl-2 nav-link d-inline-block">Thêm nhân viên</a>
+    <a href="{{route('employees.create')}}" class="pl-2 nav-link d-inline-block">Thêm nhân viên</a>
 @endsection
 @section('active-link-employees', 'active')
 @section('content')
     <h2>Thêm nhân viên</h2>
     <div class="form-content row mt-4">
-        <form class="col-md-8" action="" method="post">
+        <form class="col-md-8" action="{{route('employees.store')}}" method="post">
             @csrf
             <div class="row">
                 <div class="form-group col-md-6">

@@ -1,12 +1,12 @@
 @extends('layout.master')
 @section('title', 'Quản lý nhân viên')
 @section('breadcrumb')
-    <a href="root/employees" class="nav-link">Quản lý nhân viên</a>
+    <a href="{{route('employees.index')}}" class="nav-link">Quản lý nhân viên</a>
 @endsection
 @section('active-link-employees', 'active')
 @section('content')
     <h2>Danh sách nhân viên</h2>
-    <a href="{{route('createEmployee')}}" class="btn btn-success">+ New Employee</a>
+    <a href="{{route('employees.create')}}" class="btn btn-success">+ New Employee</a>
     <div class="table-content mt-4">
         <table class="table table-hover table-bordered">
             <thead>
@@ -51,9 +51,13 @@
                         <td>{{$employee->created_at}}</td>
                         <td>{{$employee->updated_at}}</td>
                         <td>
-                            <a title="Update" href="{{route('updateEmployee', ['id'=>$employee->id])}}"><i class="fa fa-pencil-alt"></i></a> &nbsp;&nbsp;
-                            <a title="Xóa" href="{{route('deleteEmployee', ['id'=>$employee->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i
-                                    class="fa fa-trash"></i></a>
+                            <a title="Update" href="{{route('employees.edit', ['employee'=>$employee->id])}}"><i class="fa fa-pencil-alt"></i></a> &nbsp;&nbsp;
+                            <form class="form-btn-delete" action="{{route('employees.destroy', ['employee'=>$employee->id])}}" method="post">
+                                @method('DELETE')
+                                @csrf
+                                <button class="btn-delete-record" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i
+                                        class="fa fa-trash"></i></button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
