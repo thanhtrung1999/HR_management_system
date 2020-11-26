@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Department extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'departments';
 
@@ -50,9 +51,9 @@ class Department extends Model
         ])->count();
     }
 
-    public function editDepartment($request)
+    public function editDepartment($request, $id)
     {
-        $department = $this->getDepartmentById($request->department_id);
+        $department = $this->getDepartmentById($id);
         $department->name = $request->department_name;
         $department->employee_id = $request->manager;
         $department->save();
@@ -60,6 +61,6 @@ class Department extends Model
 
     public function deleteDepartment($id)
     {
-        return Department::destroy($id);
+        return Department::where('id', $id)->delete();
     }
 }

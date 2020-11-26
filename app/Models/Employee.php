@@ -7,8 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class Employee extends Authenticatable
+class Employee extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, SoftDeletes;
 
@@ -39,7 +40,7 @@ class Employee extends Authenticatable
 
     public function getEmployeesIsManager()
     {
-        return Employee::where('user_type', '=', '1')->get();
+        return Employee::where('user_type', '=', 1)->get();
     }
 
     public function addNewEmployee($request)
@@ -79,6 +80,6 @@ class Employee extends Authenticatable
 
     public function deleteEmployee($id)
     {
-        return Employee::destroy($id);
+        return Employee::where('id', $id)->delete();
     }
 }
