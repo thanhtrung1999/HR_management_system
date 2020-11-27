@@ -3,40 +3,11 @@
 namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
-use App\Models\Root;
-use App\Models\Employee;
-use App\Models\Department;
 use App\Http\Requests\CreateDepartmentRequest;
 use App\Http\Requests\EditDepartmentRequest;
 
 class DepartmentController extends Controller
 {
-    /**
-     * @var Root
-     */
-    private $rootModel;
-    /**
-     * @var Employee
-     */
-    private $employeeModel;
-    /**
-     * @var Department
-     */
-    private $departmentModel;
-
-    /**
-     * DepartmentController constructor.
-     * @param Root $root_model
-     * @param Employee $employee_model
-     * @param Department $department_model
-     */
-    public function __construct(Root $root_model, Employee $employee_model, Department $department_model)
-    {
-        $this->rootModel = $root_model;
-        $this->employeeModel = $employee_model;
-        $this->departmentModel = $department_model;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -71,15 +42,13 @@ class DepartmentController extends Controller
      */
     public function store(CreateDepartmentRequest $request)
     {
-        $manager_id = $request->manager;
-        $checkManagerManagedDepartment = $this->departmentModel->checkManagerManagedDepartment($manager_id);
-        if($checkManagerManagedDepartment === 0){
-            $this->departmentModel->addNewDepartment($request);
-            return redirect()->route('departments.index')->with('success', 'Thêm phòng ban thành công');
-        } else {
-            session()->flash('error', 'Trưởng phòng này đã quản lý 1 phòng ban');
-            return redirect()->back();
+        $managerId = $request->manager;
+        $hasManagedDepartment = $this->departmentModel->checkManagerManagedDepartment($managerId);
+        if($hasManagedDepartment){
+            return redirect()->back()->with('error', 'Trưởng phòng này đã quản lý 1 phòng ban');
         }
+        $this->departmentModel->addNewDepartment($request);
+        return redirect()->route('departments.index')->with('success', 'Thêm phòng ban thành công');
     }
 
     /**
@@ -107,14 +76,12 @@ class DepartmentController extends Controller
      */
     public function update(EditDepartmentRequest $request, $id)
     {
-        $checkManagerManagedDepartment = $this->departmentModel->checkManagerManagedDepartmentExceptMyself($request);
-        if($checkManagerManagedDepartment === 0){
-            $this->departmentModel->editDepartment($request, $id);
-            return redirect()->route('departments.index')->with('success', 'Sửa phòng ban thành công');
-        } else {
-            session()->flash('error', 'Trưởng phòng này đã quản lý 1 phòng ban');
-            return redirect()->back();
+        $hasManagedDepartment = $this->departmentModel->checkManagerManagedDepartmentExceptMyself($request);
+        if($hasManagedDepartment){
+            return redirect()->back()->with('error', 'Trưởng phòng này đã quản lý 1 phòng ban');
         }
+        $this->departmentModel->editDepartment($request, $id);
+        return redirect()->route('departments.index')->with('success', 'Sửa phòng ban thành công');
     }
 
     /**

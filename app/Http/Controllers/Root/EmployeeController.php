@@ -3,40 +3,11 @@
 namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
-use App\Models\Root;
-use App\Models\Employee;
-use App\Models\Department;
 use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Requests\EditEmployeeRequest;
 
 class EmployeeController extends Controller
 {
-    /**
-     * @var Root
-     */
-    private $rootModel;
-    /**
-     * @var Employee
-     */
-    private $employeeModel;
-    /**
-     * @var Department
-     */
-    private $departmentModel;
-
-    /**
-     * EmployeeController constructor.
-     * @param Root $root_model
-     * @param Employee $employee_model
-     * @param Department $department_model
-     */
-    public function __construct(Root $root_model, Employee $employee_model, Department $department_model)
-    {
-        $this->rootModel = $root_model;
-        $this->employeeModel = $employee_model;
-        $this->departmentModel = $department_model;
-    }
-
     /**
      * Display a listing of the resource.
      *
