@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Str;
 
 class Employee extends Authenticatable implements MustVerifyEmail
 {
@@ -45,16 +47,27 @@ class Employee extends Authenticatable implements MustVerifyEmail
 
     public function addNewEmployee($request)
     {
-        $employee_model = new Employee();
-        $employee_model->first_name = $request['first_name'];
-        $employee_model->last_name = $request['last_name'];
-        $employee_model->email = $request['email'];
-        $employee_model->password = Hash::make($request['password']);
-        $employee_model->position = $request['position'];
-        $employee_model->department_id = $request['department_id'];
-        $employee_model->gender = $request['gender'];
-        $employee_model->user_type = $request['level'];
-        $employee_model->save();
+        $employeeModel = new Employee();
+        $employeeModel->first_name = $request['first_name'];
+        $employeeModel->last_name = $request['last_name'];
+        $employeeModel->email = $request['email'];
+        $employeeModel->password = Hash::make($request['password']);
+        $employeeModel->position = $request['position'];
+        $employeeModel->department_id = $request['department_id'];
+        $employeeModel->gender = $request['gender'];
+        $employeeModel->user_type = $request['level'];
+        $token = md5((string) Str::uuid());
+        $employeeModel->email_verify_token = $token;
+        $employeeModel->save();
+
+        if ($employeeModel->id){
+            $data = [
+                'email' => $request['email'],
+                'password' => $request['password'],
+                'url' => \route('user.verify', ['id'=>$employeeModel->id,'token'=>$token]),
+            ];
+            dispatch(new \App\Jobs\SendAccountVerificationEmail($data));
+        }
     }
 
     public function getEmployeeById($id)
@@ -81,5 +94,10 @@ class Employee extends Authenticatable implements MustVerifyEmail
     public function deleteEmployee($id)
     {
         return Employee::where('id', $id)->delete();
+    }
+
+    public function getEmployeeByToken($token)
+    {
+        return Employee::where('email_verify_token', $token)->get();
     }
 }

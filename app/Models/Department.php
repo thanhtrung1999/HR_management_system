@@ -25,17 +25,17 @@ class Department extends Model
         return Department::all();
     }
 
-    public function checkManagerManagedDepartment($manager_id)
+    public function checkManagerManagedDepartment($managerId)
     {
-        return Department::where('employee_id', '=', $manager_id)->count();
+        return Department::where('employee_id', '=', $managerId)->count();
     }
 
     public function addNewDepartment($request)
     {
-        $department_model = new Department();
-        $department_model->name = $request->department_name;
-        $department_model->employee_id = $request->manager;
-        $department_model->save();
+        $departmentModel = new Department();
+        $departmentModel->name = $request->department_name;
+        $departmentModel->employee_id = $request->manager;
+        $departmentModel->save();
     }
 
     public function getDepartmentById($id)
