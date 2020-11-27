@@ -98,7 +98,7 @@
                     </li>
                     @if(auth('employees')->user()->user_type == 1)
                         <li class="nav-item @yield('active-link-list-employees')">
-                            <a class="nav-link" href="{{route('list-employees')}}">
+                            <a class="nav-link" href="{{route('manager.listEmployees')}}">
                                 <i class="fa fa-th"></i> <span>Quản lý nhân viên</span>
                                 <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -106,7 +106,7 @@
                             </a>
                         </li>
                         <li class="nav-item @yield('active-link-working-schedule')">
-                            <a class="nav-link" href="{{route('working-schedule')}}">
+                            <a class="nav-link" href="{{route('employees-work-schedules.index')}}">
                                 <i class="fa fa-th"></i> <span>Quản lý lịch làm việc của nhân viên</span>
                                 <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
@@ -115,17 +115,11 @@
                         </li>
                     @endif
                     <li class="nav-item @yield('active-link-requests')">
-                        <a class="nav-link" href="employee/requests">
+                        <a class="nav-link" href="{{route('employee.listRequests')}}">
                             <i class="fa fa-code"></i> <span>Danh sách yêu cầu</span>
                             <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
                         </span>
-                        </a>
-                    </li>
-                    <li class="nav-item @yield('active-link-requests-approval')">
-                        <a class="nav-link" href="employee/requests-approval">
-                            <i class="fas fa-images" style="width: 20px" aria-hidden="true"></i> <span>Yêu cầu cần duyệt</span>
-                            <span class="pull-right-container"></span>
                         </a>
                     </li>
                 </ul>

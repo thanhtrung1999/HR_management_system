@@ -11,7 +11,7 @@
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
-                <th style="width: 2%;" scope="col">ID</th>
+                <th style="width: 2%;" scope="col">STT</th>
                 <th style="width: 10%;" scope="col">Họ và tên</th>
                 <th style="width: 10%" scope="col">Email</th>
                 <th style="width: 8%" scope="col">Chức vụ (Vị trí)</th>
@@ -28,9 +28,9 @@
             </thead>
             <tbody>
             @if(!empty($employees))
-                @foreach($employees as $employee)
+                @foreach($employees as $index => $employee)
                     <tr>
-                        <th scope="row">{{$employee->id}}</th>
+                        <th scope="row">{{$index+1}}</th>
                         <td>{{$employee->first_name}} {{$employee->last_name}}</td>
                         <td>{{$employee->email}}</td>
                         <td>{{$employee->position}}</td>

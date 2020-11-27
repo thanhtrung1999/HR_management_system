@@ -24,15 +24,28 @@ Route::group(['prefix' => 'root', 'middleware' => 'checkRootLogin'], function ()
 });
 
 // employee
-Route::get('/', [\App\Http\Controllers\EmployeeController::class, 'getCalendar'])->middleware('checkEmployeeLogin');
+Route::get('/', [\App\Http\Controllers\Employee\WorkScheduleController::class, 'index'])->middleware('checkEmployeeLogin');
 Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], function (){
-    Route::resource('work-schedules', \App\Http\Controllers\Employee\WorkScheduleController::class);
     Route::group(['prefix'=>'manager'], function (){
-        Route::resource('employees', \App\Http\Controllers\Employee\Manager\EmployeeController::class);
-        Route::resource('employees-work-schedule', \App\Http\Controllers\Employee\Manager\ManageEmployeeWorkScheduleController::class);
+        Route::resource('employees', \App\Http\Controllers\Employee\Manager\EmployeeController::class)->names([
+            'index' => 'manager.listEmployees',
+            'create' => 'manager.createEmployee',
+            'store' => 'manager.postCreateEmployee',
+            'show' => 'manager.showInfoEmployee',
+            'edit' => 'manager.editEmployee',
+            'update' => 'manager.putUpdateEmployee',
+            'destroy' => 'manager.deleteEmployee'
+        ]);
+        Route::resource('employees-work-schedules', \App\Http\Controllers\Employee\Manager\ManageEmployeeWorkScheduleController::class)->only([
+            'index', 'show', 'destroy'
+        ]);
     });
-    Route::resource('requests', \App\Http\Controllers\Employee\RequestController::class);
-    Route::resource('requests-approval', \App\Http\Controllers\Employee\RequestApprovalController::class);
+    Route::resource('requests', \App\Http\Controllers\Employee\RequestController::class)->except(['show', 'edit', 'update'])->names([
+        'index' => 'employee.listRequests',
+        'create' => 'employee.createRequest',
+        'store' => 'employee.postCreateRequest',
+        'destroy' => 'employee.cancelRequest'
+    ]);
 });
 
-Route::get('send-email-verified-acc/{email}', [\App\Http\Controllers\MailController::class, 'sendMailVerified']);
+Route::get('verify-account/{id}/{token}', [\App\Http\Controllers\MailController::class, 'verifyAccount'])->name('user.verify');
