@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('title')</title>
     <base href="{{asset('')}}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap 3.3.7 -->
@@ -19,6 +20,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- My CSS -->
+    <link rel="stylesheet" href="css/calendar.css" />
     <link rel="stylesheet" href="css/style.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
@@ -83,6 +85,7 @@
 {{--<!--CKEditor -->
 <script src="ckeditor/ckeditor.js"></script>--}}
 <!--My SCRIPT-->
+<script src="js/calendar.js"></script>
 <script src="js/script.js"></script>
 <!--<script src="js/sort.js"></script>-->
 <!-- page script -->

@@ -25,6 +25,7 @@ Route::group(['prefix' => 'root', 'middleware' => 'checkRootLogin'], function ()
 
 // employee
 Route::get('/', [\App\Http\Controllers\Employee\WorkScheduleController::class, 'index'])->middleware('checkEmployeeLogin');
+Route::post('check-in', [\App\Http\Controllers\Employee\WorkScheduleController::class, 'checkIn']);
 Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], function (){
     Route::group(['prefix'=>'manager'], function (){
         Route::resource('employees', \App\Http\Controllers\Employee\Manager\EmployeeController::class)->names([
@@ -49,3 +50,4 @@ Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], fun
 });
 
 Route::get('verify-account/{id}/{token}', [\App\Http\Controllers\MailController::class, 'verifyAccount'])->name('user.verify');
+Route::post('verify-account/{id}/{token}', [\App\Http\Controllers\MailController::class, 'resetPassword'])->name('user.resetPassword');

@@ -27,7 +27,6 @@ class CreateEmployeeRequest extends FormRequest
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:employees,email',
-            'password' => 'required|min:3',
             'department_id' => 'required|gt:0',
         ];
     }
@@ -40,8 +39,6 @@ class CreateEmployeeRequest extends FormRequest
             'email.required' => 'Trường này là bắt buộc',
             'email.email' => 'Email sai định dạng',
             'email.unique' => 'Email đã tồn tại',
-            'password.required' => 'Trường này là bắt buộc',
-            'password.min' => 'Password lớn hơn 3 ký tự',
             'department_id.required' => 'Vui lòng chọn phòng ban làm việc',
             'department_id.gt' => 'Vui lòng chọn phòng ban làm việc',
         ];

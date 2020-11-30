@@ -40,7 +40,7 @@
                     </div>
                 @endif
             </div>
-            <div class="form-group">
+            {{--<div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" placeholder="Password" name="password" id="email" value="">
                 @if($errors->has('password'))
@@ -48,7 +48,7 @@
                         <strong>{{$errors->first('password')}}</strong>
                     </div>
                 @endif
-            </div>
+            </div>--}}
             <div class="form-group">
                 <label for="position">Chức vụ (Vị trí)</label>
                 <input type="text" class="form-control" placeholder="Chức vụ" name="position" id="position" value="{{old('position')}}">

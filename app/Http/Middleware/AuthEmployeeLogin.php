@@ -20,8 +20,7 @@ class AuthEmployeeLogin
         if(Auth::guard('employees')->check()){
             return $next($request);
         } else {
-            session()->flash('error', 'Bạn cần đăng nhập');
-            return redirect('login');
+            return redirect('login')->with('error', 'Bạn cần đăng nhập');
         }
     }
 }

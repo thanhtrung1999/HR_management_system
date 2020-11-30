@@ -23,20 +23,16 @@ class AuthController extends Controller
         if($request->type == 'root'){
             $check_login = Auth::guard('root')->attempt(['email'=>$request->email, 'password'=>$request->password]);
             if($check_login){
-                session()->flash('success', 'Đăng nhập thành công');
-                return redirect('root/employees');
+                return redirect('root/employees')->with('success', 'Đăng nhập thành công');
             } else {
-                session()->flash('error', 'Sai email hoặc password');
-                return redirect('login')->withInput();
+                return redirect('login')->withInput()->with('error', 'Sai email hoặc password');
             }
         } else {
             $check_login = Auth::guard('employees')->attempt(['email'=>$request->email, 'password'=>$request->password]);
             if($check_login){
-                session()->flash('success', 'Đăng nhập thành công');
-                return redirect('/');
+                return redirect('/')->with('success', 'Đăng nhập thành công');
             } else {
-                session()->flash('error', 'Sai email hoặc password');
-                return redirect('login')->withInput();
+                return redirect('login')->withInput()->with('error', 'Sai email hoặc password');
             }
         }
     }
@@ -47,7 +43,6 @@ class AuthController extends Controller
         } else {
             Auth::guard('employees')->logout();
         }
-        session()->flash('success', 'Đăng xuất thành công');
-        return redirect('login');
+        return redirect('login')->with('success', 'Đăng xuất thành công');
     }
 }
