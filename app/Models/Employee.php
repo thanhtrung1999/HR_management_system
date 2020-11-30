@@ -47,11 +47,12 @@ class Employee extends Authenticatable implements MustVerifyEmail
 
     public function addNewEmployee($request)
     {
+        $password = Str::random(8);
         $employeeModel = new Employee();
         $employeeModel->first_name = $request['first_name'];
         $employeeModel->last_name = $request['last_name'];
         $employeeModel->email = $request['email'];
-        $employeeModel->password = Hash::make($request['password']);
+        $employeeModel->password = Hash::make($password);
         $employeeModel->position = $request['position'];
         $employeeModel->department_id = $request['department_id'];
         $employeeModel->gender = $request['gender'];
@@ -63,7 +64,7 @@ class Employee extends Authenticatable implements MustVerifyEmail
         if ($employeeModel->id){
             $data = [
                 'email' => $request['email'],
-                'password' => $request['password'],
+                'password' => $password,
                 'url' => \route('user.verify', ['id'=>$employeeModel->id,'token'=>$token]),
             ];
             dispatch(new \App\Jobs\SendAccountVerificationEmail($data));

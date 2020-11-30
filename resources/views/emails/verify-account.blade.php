@@ -9,6 +9,6 @@
     <title>Email xác thực tài khoản</title>
 </head>
 <body>
-<p>Bạn đã trở thành 1 thành viên của chúng tôi, mật khẩu đăng nhập của bạn là: <b>{{$password}}</b>. Vui lòng click <a href="{{$url}}">vào đây</a> để xác thực tài khoản</p>
+<h3>Bạn đã trở thành 1 thành viên của chúng tôi, mật khẩu của bạn là {{$password}}. Vui lòng click <a href="{{$url}}">vào đây</a> để xác thực tài khoản</h3>
 </body>
 </html>
