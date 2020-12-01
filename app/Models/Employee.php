@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Str;
@@ -34,6 +33,10 @@ class Employee extends Authenticatable implements MustVerifyEmail
 
     public function departmentManagedEmployee(){
         return $this->hasOne('App\Models\Department', 'employee_id', 'id');
+    }
+
+    public function workingDays(){
+        return $this->hasMany('App\Models\WorkingDays', 'employee_id', 'id');
     }
 
     public function getListEmployees(){
@@ -99,6 +102,6 @@ class Employee extends Authenticatable implements MustVerifyEmail
 
     public function getEmployeeByToken($token)
     {
-        return Employee::where('email_verify_token', $token)->get();
+        return Employee::where('email_verify_token', $token)->first();
     }
 }
