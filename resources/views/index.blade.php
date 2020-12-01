@@ -1,13 +1,17 @@
 @extends('layout.master')
 @section('title', 'Lịch làm việc')
 @section('active-link-calendar', 'active')
+@section('breadcrumb')
+    <a href="" class="nav-link">Lịch làm việc</a>
+@endsection
 @section('content')
     <div class="container-calendar">
 
-        <div class="calendar-header row mb-3">
-            <h3 class="col-md-6" id="monthAndYear"></h3>
-            <div class="col-md-6 btn-in-out">
-                <button class="float-right btn btn-secondary btn-check-in">Check in</button>
+        <div class="calendar-header position-relative row mb-3">
+            <h3 id="monthAndYear"></h3>
+            <div class="btn-in-out">
+                <button class="btn btn-secondary" onclick="atNow()">Today</button>
+                <button class="btn btn-secondary ml-2 btn-check-in">Check in</button>
             </div>
         </div>
 
@@ -41,4 +45,7 @@
         </div>
 
     </div>
+@endsection
+@section('script')
+    <script src="js/load-calendar.js"></script>
 @endsection

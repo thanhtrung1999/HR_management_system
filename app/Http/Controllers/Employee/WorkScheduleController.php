@@ -7,24 +7,11 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Root;
 use App\Models\WorkingDays;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WorkScheduleController extends Controller
 {
-    protected $workingDaysModel;
-
-    public function __construct(
-        Root $rootModel,
-        Employee $employeeModel,
-        Department $departmentModel,
-        WorkingDays $workingDaysModel)
-    {
-        parent::__construct($rootModel, $employeeModel, $departmentModel);
-        $this->workingDaysModel = $workingDaysModel;
-    }
-
     public function index()
     {
         return view('index');
@@ -32,12 +19,30 @@ class WorkScheduleController extends Controller
 
     public function checkIn(Request $request){
         $employeeId = Auth::guard('employees')->user()->id;
-        $dataCheckin = $this->workingDaysModel->addCheckIn($employeeId, Carbon::parse($request['fulltime']));
-
-        echo $dataCheckin;
+        $checkInNow = $this->workingDaysModel->isCheckinNow($employeeId, now()->format('Y-m-d'));
+        if($checkInNow == 0){
+            $dataCheckin = $this->workingDaysModel->addCheckIn($employeeId, $request['day'], $request['time']);
+            echo $dataCheckin;
+        }
+        echo 'Hôm nay đã checkin';
     }
 
-    public function checkOut(){
+    public function loadCalendar(){
+        $employeeId = Auth::guard('employees')->user()->id;
+        $data = $this->workingDaysModel->getWorkingDaysByEmployeeId($employeeId);
 
+        echo json_encode($data);
+    }
+
+    public function checkOut(Request $request){
+        $employeeId = Auth::guard('employees')->user()->id;
+        $workingDay = $this->workingDaysModel->getWorkingDay($employeeId, $request['day']);
+        $checkoutNow = $this->workingDaysModel->isCheckoutNow($employeeId, $request['day']);
+
+        if ($checkoutNow != 0){
+            $dataCheckout = $this->workingDaysModel->addCheckOut($workingDay->id, $request['time']);
+            echo $dataCheckout;
+        }
+        echo 'Hôm nay đã checkout';
     }
 }

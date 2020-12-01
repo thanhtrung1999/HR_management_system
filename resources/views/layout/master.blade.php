@@ -85,9 +85,9 @@
 {{--<!--CKEditor -->
 <script src="ckeditor/ckeditor.js"></script>--}}
 <!--My SCRIPT-->
+@yield('script')
 <script src="js/calendar.js"></script>
 <script src="js/script.js"></script>
-<!--<script src="js/sort.js"></script>-->
 <!-- page script -->
 <script>
     $(function () {

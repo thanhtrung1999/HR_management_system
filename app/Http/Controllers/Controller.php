@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Root;
+use App\Models\WorkingDays;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -30,15 +31,22 @@ class Controller extends BaseController
     protected $departmentModel;
 
     /**
+     * @var WorkingDays
+     */
+    protected $workingDaysModel;
+
+    /**
      * Controller constructor.
      * @param Root $rootModel
      * @param Employee $employeeModel
      * @param Department $departmentModel
+     * @param WorkingDays $workingDaysModel
      */
-    public function __construct(Root $rootModel, Employee $employeeModel, Department $departmentModel)
+    public function __construct(Root $rootModel, Employee $employeeModel, Department $departmentModel, WorkingDays $workingDaysModel)
     {
         $this->rootModel = $rootModel;
         $this->employeeModel = $employeeModel;
         $this->departmentModel = $departmentModel;
+        $this->workingDaysModel = $workingDaysModel;
     }
 }

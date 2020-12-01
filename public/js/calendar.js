@@ -44,18 +44,26 @@ function next() {
   currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
   currentMonth = (currentMonth + 1) % 12;
   showCalendar(currentMonth, currentYear);
+  load_calendar();
 }
 
 function previous() {
   currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
   currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
   showCalendar(currentMonth, currentYear);
+  load_calendar();
 }
 
 function jump() {
   currentYear = parseInt(selectYear.value);
   currentMonth = parseInt(selectMonth.value);
   showCalendar(currentMonth, currentYear);
+  load_calendar();
+}
+
+function atNow(){
+    showCalendar(currentMonth, currentYear);
+    load_calendar();
 }
 
 function showCalendar(month, year) {
@@ -64,10 +72,10 @@ function showCalendar(month, year) {
 
   tbl = document.getElementById("calendar-body");
 
-  
+
   tbl.innerHTML = "";
 
-  
+
   monthAndYear.innerHTML = months[month] + " " + year;
   selectYear.value = year;
   selectMonth.value = month;
