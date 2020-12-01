@@ -26,6 +26,9 @@ Route::group(['prefix' => 'root', 'middleware' => 'checkRootLogin'], function ()
 // employee
 Route::get('/', [\App\Http\Controllers\Employee\WorkScheduleController::class, 'index'])->middleware('checkEmployeeLogin');
 Route::post('check-in', [\App\Http\Controllers\Employee\WorkScheduleController::class, 'checkIn']);
+Route::post('check-out', [\App\Http\Controllers\Employee\WorkScheduleController::class, 'checkOut']);
+Route::post('load-calendar', [\App\Http\Controllers\Employee\WorkScheduleController::class, 'loadCalendar']);
+
 Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], function (){
     Route::group(['prefix'=>'manager'], function (){
         Route::resource('employees', \App\Http\Controllers\Employee\Manager\EmployeeController::class)->names([
@@ -47,6 +50,7 @@ Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], fun
         'store' => 'employee.postCreateRequest',
         'destroy' => 'employee.cancelRequest'
     ]);
+    Route::resource('profile', \App\Http\Controllers\ProfileController::class)->only(['index', 'edit', 'update']);
 });
 
 Route::get('verify-account/{id}/{token}', [\App\Http\Controllers\MailController::class, 'verifyAccount'])->name('user.verify');
