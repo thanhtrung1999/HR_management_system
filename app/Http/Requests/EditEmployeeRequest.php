@@ -28,7 +28,10 @@ class EditEmployeeRequest extends FormRequest
             'last_name' => 'required',
             'email' => 'required|email|unique:employees,email,'.$this->employee,
             'password' => 'nullable|min:3',
+            'position' => 'nullable',
             'department_id' => 'required|gt:0',
+            'gender' => 'required|in:0,1',
+            'level' => 'required|in:0,1'
         ];
     }
 

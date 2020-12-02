@@ -1,5 +1,8 @@
 @extends('layout.master')
 @section('title', 'Lịch làm việc')
+@section('stylesheet')
+    <link rel="stylesheet" href="css/calendar.css" />
+@endsection
 @section('active-link-calendar', 'active')
 @section('breadcrumb')
     <a href="" class="nav-link">Lịch làm việc</a>
@@ -48,4 +51,5 @@
 @endsection
 @section('script')
     <script src="js/load-calendar.js"></script>
+    <script src="js/calendar.js"></script>
 @endsection

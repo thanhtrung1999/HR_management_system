@@ -51,17 +51,10 @@ class Employee extends Authenticatable implements MustVerifyEmail
     public function addNewEmployee($request)
     {
         $password = Str::random(8);
+        $data = $request->validated();
+        $data['password'] = $password;
         $employeeModel = new Employee();
-        $employeeModel->first_name = $request['first_name'];
-        $employeeModel->last_name = $request['last_name'];
-        $employeeModel->email = $request['email'];
-        $employeeModel->password = Hash::make($password);
-        $employeeModel->position = $request['position'];
-        $employeeModel->department_id = $request['department_id'];
-        $employeeModel->gender = $request['gender'];
-        $employeeModel->user_type = $request['level'];
-        $token = md5((string) Str::uuid());
-        $employeeModel->email_verify_token = $token;
+        $employeeModel->fill($data);
         $employeeModel->save();
 
         if ($employeeModel->id){
@@ -103,5 +96,26 @@ class Employee extends Authenticatable implements MustVerifyEmail
     public function getEmployeeByToken($token)
     {
         return Employee::where('email_verify_token', $token)->first();
+    }
+
+    public function editProfile($request, $id)
+    {
+        $profile = $this->getEmployeeById($id);
+        $profile->first_name = $request['first_name'];
+        $profile->last_name = $request['last_name'];
+        if($request->has('profile_img')){
+            if (!empty($profile->avatar)){
+                unlink('images/uploads/'.$profile->avatar);
+            }
+            $file = $request['profile_img'];
+            $file_name = time() . '-profile-'. $id .'-' . $_FILES['profile_img']['name'];
+            $file->move('images/uploads/', $file_name);
+            $profile->avatar = $file_name;
+        }
+        $profile->gender = $request['gender'];
+        $profile->birthday = $request['birthday'];
+        $profile->phone_number = $request['phone'];
+        $profile->address = $request['address'];
+        $profile->save();
     }
 }
