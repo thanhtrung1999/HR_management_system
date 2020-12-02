@@ -17,10 +17,13 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <!--    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">-->
+    <!-- JQuery UI -->
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- My CSS -->
-    <link rel="stylesheet" href="css/calendar.css" />
+    @yield('stylesheet')
     <link rel="stylesheet" href="css/style.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
@@ -65,7 +68,7 @@
 
 <!-- jQuery -->
 <script src="js/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
+<!-- jQuery UI 1.12.1 -->
 <script src="js/jquery-ui.min.js"></script>
 <!-- Font Awesome 6 -->
 <script src="https://kit.fontawesome.com/5efd05f2e8.js" crossorigin="anonymous"></script>
@@ -86,7 +89,6 @@
 <script src="ckeditor/ckeditor.js"></script>--}}
 <!--My SCRIPT-->
 @yield('script')
-<script src="js/calendar.js"></script>
 <script src="js/script.js"></script>
 <!-- page script -->
 <script>

@@ -73,7 +73,7 @@
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="pull-left image">
-                    <img src="http://www.clker.com/cliparts/d/L/P/X/z/i/no-image-icon-hi.png" class="img-circle" alt="User Image">
+                    <img style="width: 3.5rem" src="{{empty(auth('employees')->user()->avatar) ? 'http://www.clker.com/cliparts/d/L/P/X/z/i/no-image-icon-hi.png' : 'images/uploads/'.auth('employees')->user()->avatar}}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p style="margin-bottom: 4px; color: #ffffff">{{auth('employees')->user()->first_name}} {{auth('employees')->user()->last_name}}</p>

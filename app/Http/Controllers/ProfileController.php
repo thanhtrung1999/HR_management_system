@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditProfileRequest;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -32,10 +33,11 @@ class ProfileController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(EditProfileRequest $request, $id)
     {
-        //
+        $this->employeeModel->editProfile($request, $id);
+        return redirect()->route('profile.index')->with('success', 'Sửa thông tin cá nhân thành công');
     }
 }
