@@ -36,7 +36,7 @@
             <h5 style="margin: 0">{{session('success')}}</h5>
         </div>
     @endif
-    <form action="{{route('changePassword', ['id' => $id, 'token' => $token])}}" method="post">
+    <form action="{{route('sendDataResetPass', ['id' => $id, 'token' => $token])}}" method="post">
         @csrf
         <div class="form-group">
             <label for="current-password">Mật khẩu hiện tại</label>

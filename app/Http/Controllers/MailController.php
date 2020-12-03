@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use App\Http\Requests\ResetPasswordRequest;
-use Illuminate\Support\Facades\Hash;
+use App\Models\ResetPassword;
 
 class MailController extends Controller
 {
-    public function verifyAccount($id, $token){
+    public function getFormReset($id, $token){
         $employee = $this->employeeModel->getEmployeeByToken($token);
         if($employee->email_verified_at !== null){
             return redirect('login')->with('error','Tài khoản của bạn đã được xác thực');
@@ -20,15 +17,14 @@ class MailController extends Controller
         ]);
     }
 
-    public function resetPassword(ResetPasswordRequest $request, $id, $token){
-        $employee = $this->employeeModel->getEmployeeByToken($token);
-        if (!Hash::check($request['current_password'], $employee->password)){
-            return redirect()->back()->with('error', 'Mật khẩu hiện tại không đúng');
+    public function getFormResetByRoot($id, $token){
+        $resetPassword = ResetPassword::where('token', $token)->first();
+        if (empty($resetPassword)){
+            return redirect('login')->with('error','Đường dẫn đã không còn hiệu lực');
         }
-        $employee->password = Hash::make($request['new_password']);
-        $employee->email_verified_at = Carbon::now();
-        $employee->save();
-
-        return redirect('login')->with('success','Xác nhận đổi mật khẩu thành công');
+        return view('emails.reset-password-by-root', [
+            'id' => $id,
+            'token' => $token
+        ]);
     }
 }
