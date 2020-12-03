@@ -31,15 +31,10 @@ Route::post('load-calendar', [\App\Http\Controllers\Employee\WorkScheduleControl
 
 Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], function (){
     Route::group(['prefix'=>'manager'], function (){
-        Route::resource('employees', \App\Http\Controllers\Employee\Manager\EmployeeController::class)->names([
-            'index' => 'manager.listEmployees',
-            'create' => 'manager.createEmployee',
-            'store' => 'manager.postCreateEmployee',
-            'show' => 'manager.showInfoEmployee',
-            'edit' => 'manager.editEmployee',
-            'update' => 'manager.putUpdateEmployee',
-            'destroy' => 'manager.deleteEmployee'
-        ]);
+        Route::group(['prefix'=>'employees'], function (){
+            Route::get('/', [\App\Http\Controllers\Employee\Manager\EmployeeController::class, 'getEmployees'])->name('manager.listEmployees');
+            Route::get('detail/{id}', [\App\Http\Controllers\Employee\Manager\EmployeeController::class, 'detailEmployee'])->name('manager.detailEmployee');
+        });
         Route::resource('employees-work-schedules', \App\Http\Controllers\Employee\Manager\ManageEmployeeWorkScheduleController::class)->only([
             'index', 'show', 'destroy'
         ]);
@@ -53,5 +48,9 @@ Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], fun
     Route::resource('profile', \App\Http\Controllers\ProfileController::class)->only(['index', 'edit', 'update']);
 });
 
-Route::get('verify-account/{id}/{token}', [\App\Http\Controllers\MailController::class, 'verifyAccount'])->name('user.verify');
-Route::post('verify-account/{id}/{token}', [\App\Http\Controllers\MailController::class, 'resetPassword'])->name('user.resetPassword');
+Route::get('verify-account/{id}/{token}', [\App\Http\Controllers\MailController::class, 'getFormReset'])->name('user.verify');
+Route::post('reset-password/{id}/{token}', [\App\Http\Controllers\ResetPasswordController::class, 'changePassword'])->name('changePassword');
+
+Route::post('reset-password', [\App\Http\Controllers\ResetPasswordController::class, 'resetPasswordByRoot']);
+Route::get('reset-password/{id}/{token}', [\App\Http\Controllers\MailController::class, 'getFormResetByRoot'])->name('reset-password');
+Route::post('send-data-reset/{id}/{token}', [\App\Http\Controllers\ResetPasswordController::class, 'sendDataResetPass'])->name('sendDataResetPass');
