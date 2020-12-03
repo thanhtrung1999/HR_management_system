@@ -21,6 +21,8 @@ class Employee extends Authenticatable implements MustVerifyEmail
         'last_name',
         'email',
         'password',
+        'position',
+        'department_id'
     ];
 
     protected $hidden = [
@@ -51,10 +53,13 @@ class Employee extends Authenticatable implements MustVerifyEmail
     public function addNewEmployee($request)
     {
         $password = Str::random(8);
+        $token = md5((string) Str::uuid());
         $data = $request->validated();
         $data['password'] = $password;
+
         $employeeModel = new Employee();
         $employeeModel->fill($data);
+        $employeeModel->email_verify_token = $token;
         $employeeModel->save();
 
         if ($employeeModel->id){
@@ -104,6 +109,9 @@ class Employee extends Authenticatable implements MustVerifyEmail
         $profile->first_name = $request['first_name'];
         $profile->last_name = $request['last_name'];
         if($request->has('profile_img')){
+            if (!file_exists('images/uploads')) {
+                mkdir('images/uploads');
+            }
             if (!empty($profile->avatar)){
                 unlink('images/uploads/'.$profile->avatar);
             }
@@ -117,5 +125,10 @@ class Employee extends Authenticatable implements MustVerifyEmail
         $profile->phone_number = $request['phone'];
         $profile->address = $request['address'];
         $profile->save();
+    }
+
+    public function getListEmployeesByDepartmentId($departmentId)
+    {
+        return Employee::where('department_id', $departmentId)->paginate(10);
     }
 }

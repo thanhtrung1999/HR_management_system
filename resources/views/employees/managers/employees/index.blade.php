@@ -1,6 +1,9 @@
 @extends('layout.master')
 @section('title', 'Quản lý nhân viên')
-@section('active-link-list-employee', 'active')
+@section('breadcrumb')
+    <a href="{{route('manager.listEmployees')}}" class="nav-link">Quản lý nhân viên</a>
+@endsection
+@section('active-link-list-employees', 'active')
 @section('content')
-    <h2>Đây là trang quản lý nhân viên</h2>
+    @include('employees.managers.employees.contents.list-employee')
 @endsection

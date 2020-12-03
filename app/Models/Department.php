@@ -63,4 +63,9 @@ class Department extends Model
     {
         return Department::where('id', $id)->delete();
     }
+
+    public function getDepartmentByManagerId($managerId)
+    {
+        return Department::where('employee_id', $managerId)->first();
+    }
 }
