@@ -20,4 +20,8 @@ class Root extends Authenticatable
     protected $hidden = [
         'password', 'remember_token'
     ];
+
+    public function getRoot(){
+        return Root::all()->first();
+    }
 }
