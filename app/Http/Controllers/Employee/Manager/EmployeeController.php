@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Employee\Manager;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Exports\EmployeeExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -21,5 +22,9 @@ class EmployeeController extends Controller
         return view('employees.managers.employees.detail', [
             'employee' => $employee
         ]);
+    }
+
+    public function exportEmployee(){
+        return Excel::download(new EmployeeExport(), 'employees.xlsx');
     }
 }
