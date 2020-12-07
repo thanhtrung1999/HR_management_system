@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class WorkingDays extends Model
 {
@@ -76,5 +77,13 @@ class WorkingDays extends Model
         } else {
             return false;
         }
+    }
+
+    public function getEmployeeWorkDays($employeeId, $month)
+    {
+        return DB::table('working_days')
+            ->where('employee_id', '=', $employeeId)
+            ->whereRaw("MONTH(`working_on_day`) = $month")
+            ->get();
     }
 }

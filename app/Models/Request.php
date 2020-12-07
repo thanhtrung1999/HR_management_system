@@ -89,4 +89,12 @@ class Request extends Model
             ->where('departments.employee_id', '=', $managerId)
             ->get();
     }
+
+    public function getApprovedRequest($employeeId)
+    {
+        return Request::where([
+            'employee_id' => $employeeId,
+            'status' => 1
+        ])->get();
+    }
 }
