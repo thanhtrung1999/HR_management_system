@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Root;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateDepartmentRequest;
 use App\Http\Requests\EditDepartmentRequest;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -24,7 +29,7 @@ class DepartmentController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function create()
     {
@@ -38,13 +43,13 @@ class DepartmentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateDepartmentRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
     public function store(CreateDepartmentRequest $request)
     {
         $managerId = $request->manager;
         $hasManagedDepartment = $this->departmentModel->checkManagerManagedDepartment($managerId);
-        if($hasManagedDepartment){
+        if ($hasManagedDepartment) {
             return redirect()->back()->with('error', 'Trưởng phòng này đã quản lý 1 phòng ban');
         }
         $this->departmentModel->addNewDepartment($request);
@@ -55,7 +60,7 @@ class DepartmentController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function edit($id)
     {
@@ -72,12 +77,12 @@ class DepartmentController extends Controller
      *
      * @param EditDepartmentRequest $request
      * @param int $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
     public function update(EditDepartmentRequest $request, $id)
     {
         $hasManagedDepartment = $this->departmentModel->checkManagerManagedDepartmentExceptMyself($request);
-        if($hasManagedDepartment){
+        if ($hasManagedDepartment) {
             return redirect()->back()->with('error', 'Trưởng phòng này đã quản lý 1 phòng ban');
         }
         $this->departmentModel->editDepartment($request, $id);
@@ -88,7 +93,7 @@ class DepartmentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy($id)
     {

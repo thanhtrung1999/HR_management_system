@@ -11,16 +11,16 @@ class AuthLogout
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param Request $request
+     * @param Closure $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::guard('root')->check()){
+        if (Auth::guard('root')->check()) {
             session()->flash('error', 'Vui lòng đăng xuất để trở lại trang đăng nhập');
             return redirect()->route('employees.index');
-        } else if (Auth::guard('employees')->check()){
+        } elseif (Auth::guard('employees')->check()) {
             session()->flash('error', 'Vui lòng đăng xuất để trở lại trang đăng nhập');
             return redirect('/');
         } else {

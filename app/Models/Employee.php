@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\SendAccountVerificationEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Str;
+use function route;
 
 class Employee extends Authenticatable implements MustVerifyEmail
 {
@@ -29,25 +31,32 @@ class Employee extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token'
     ];
 
-    public function employeeOfDepartment(){
+    private const USERTYPE_EMPLOYEE = 0;
+    private const USERTYPE_MANAGER = 1;
+
+    public function employeeOfDepartment()
+    {
         return $this->belongsTo('App\Models\Department', 'department_id', 'id');
     }
 
-    public function departmentManagedEmployee(){
+    public function departmentManagedEmployee()
+    {
         return $this->hasOne('App\Models\Department', 'employee_id', 'id');
     }
 
-    public function workingDays(){
+    public function workingDays()
+    {
         return $this->hasMany('App\Models\WorkingDays', 'employee_id', 'id');
     }
 
-    public function getListEmployees(){
+    public function getListEmployees()
+    {
         return Employee::paginate(10);
     }
 
     public function getEmployeesIsManager()
     {
-        return Employee::where('user_type', '=', 1)->get();
+        return Employee::where('user_type', '=', self::USERTYPE_MANAGER)->get();
     }
 
     public function addNewEmployee($request)
@@ -62,13 +71,13 @@ class Employee extends Authenticatable implements MustVerifyEmail
         $employeeModel->email_verify_token = $token;
         $employeeModel->save();
 
-        if ($employeeModel->id){
+        if ($employeeModel->id) {
             $data = [
                 'email' => $request['email'],
                 'password' => $password,
-                'url' => \route('user.verify', ['id'=>$employeeModel->id,'token'=>$token]),
+                'url' => route('user.verify', ['id'=>$employeeModel->id,'token'=>$token]),
             ];
-            dispatch(new \App\Jobs\SendAccountVerificationEmail($data));
+            dispatch(new SendAccountVerificationEmail($data));
         }
     }
 
@@ -83,7 +92,7 @@ class Employee extends Authenticatable implements MustVerifyEmail
         $employee->first_name = $request['first_name'];
         $employee->last_name = $request['last_name'];
         $employee->email = $request['email'];
-        if(!empty($request['password'])){
+        if (!empty($request['password'])) {
             $employee->password = Hash::make($request['password']);
         }
         $employee->position = $request['position'];
@@ -108,11 +117,11 @@ class Employee extends Authenticatable implements MustVerifyEmail
         $profile = $this->getEmployeeById($id);
         $profile->first_name = $request['first_name'];
         $profile->last_name = $request['last_name'];
-        if($request->has('profile_img')){
+        if ($request->has('profile_img')) {
             if (!file_exists('images/uploads')) {
                 mkdir('images/uploads');
             }
-            if (!empty($profile->avatar)){
+            if (!empty($profile->avatar)) {
                 unlink('images/uploads/'.$profile->avatar);
             }
             $file = $request['profile_img'];

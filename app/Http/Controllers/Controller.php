@@ -54,8 +54,8 @@ class Controller extends BaseController
         Employee $employeeModel,
         Department $departmentModel,
         WorkingDays $workingDaysModel,
-        Request $requestModel)
-    {
+        Request $requestModel
+    ) {
         $this->rootModel = $rootModel;
         $this->employeeModel = $employeeModel;
         $this->departmentModel = $departmentModel;

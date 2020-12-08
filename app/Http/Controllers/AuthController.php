@@ -15,21 +15,23 @@ class AuthController extends Controller
         $this->middleware('guest:employee')->except('logout');
     }*/
 
-    public function login(){
+    public function login()
+    {
         return view('login.login');
     }
 
-    public function postLogin(LoginRequest $request){
-        if($request->type == 'root'){
-            $check_login = Auth::guard('root')->attempt(['email'=>$request->email, 'password'=>$request->password]);
-            if($check_login){
+    public function postLogin(LoginRequest $request)
+    {
+        if ($request->type == 'root') {
+            $checkLogin = Auth::guard('root')->attempt(['email'=>$request->email, 'password'=>$request->password]);
+            if ($checkLogin) {
                 return redirect('root/employees')->with('success', 'Đăng nhập thành công');
             } else {
                 return redirect('login')->withInput()->with('error', 'Sai email hoặc password');
             }
         } else {
-            $check_login = Auth::guard('employees')->attempt(['email'=>$request->email, 'password'=>$request->password]);
-            if($check_login){
+            $checkLogin = Auth::guard('employees')->attempt(['email'=>$request->email, 'password'=>$request->password]);
+            if ($checkLogin) {
                 return redirect('/')->with('success', 'Đăng nhập thành công');
             } else {
                 return redirect('login')->withInput()->with('error', 'Sai email hoặc password');
@@ -37,8 +39,9 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(){
-        if (Auth::guard('root')->check()){
+    public function logout()
+    {
+        if (Auth::guard('root')->check()) {
             Auth::guard('root')->logout();
         } else {
             Auth::guard('employees')->logout();

@@ -8,7 +8,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
-    public function getEmployees(){
+    public function getEmployees()
+    {
         $managerId = auth('employees')->user()->id;
         $department = $this->departmentModel->getDepartmentByManagerId($managerId);
         $employees = $this->employeeModel->getListEmployeesByDepartmentId($department->id);
@@ -17,14 +18,16 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function detailEmployee($id){
+    public function detailEmployee($id)
+    {
         $employee = $this->employeeModel->getEmployeeById($id);
         return view('employees.managers.employees.detail', [
             'employee' => $employee
         ]);
     }
 
-    public function exportEmployee(){
+    public function exportEmployee()
+    {
         return Excel::download(new EmployeeExport(), 'employees.xlsx');
     }
 }

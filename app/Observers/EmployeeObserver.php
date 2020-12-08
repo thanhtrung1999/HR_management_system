@@ -16,8 +16,6 @@ class EmployeeObserver
      */
     public function creating(Employee $employee)
     {
-        $token = md5((string) Str::uuid());
-        $employee->email_verify_token = $token;
         $employee->password = Hash::make($employee->password);
     }
 

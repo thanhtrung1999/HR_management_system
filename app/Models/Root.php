@@ -21,7 +21,8 @@ class Root extends Authenticatable
         'password', 'remember_token'
     ];
 
-    public function getRoot(){
+    public function getRoot()
+    {
         return Root::all()->first();
     }
 }

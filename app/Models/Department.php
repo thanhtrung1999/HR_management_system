@@ -12,11 +12,13 @@ class Department extends Model
 
     protected $table = 'departments';
 
-    public function employees(){
+    public function employees()
+    {
         return $this->hasMany('App\Models\Employee', 'department_id', 'id');
     }
 
-    public function manager(){
+    public function manager()
+    {
         return $this->belongsTo('App\Models\Employee', 'employee_id', 'id');
     }
 

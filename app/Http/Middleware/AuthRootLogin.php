@@ -11,13 +11,13 @@ class AuthRootLogin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param Request $request
+     * @param Closure $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::guard('root')->check()){
+        if (Auth::guard('root')->check()) {
             return $next($request);
         } else {
             session()->flash('error', 'Bạn cần đăng nhập');
