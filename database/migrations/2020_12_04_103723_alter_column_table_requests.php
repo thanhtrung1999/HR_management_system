@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class UpgradeColumn extends Migration
+class AlterColumnTableRequests extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,9 @@ class UpgradeColumn extends Migration
      */
     public function up()
     {
-        if(Schema::hasColumn('employees', 'position')){
-            Schema::table('employees', function (Blueprint $table){
-                DB::statement('ALTER TABLE `employees` MODIFY COLUMN `position` VARCHAR(100)');
+        if (Schema::hasColumn('requests', 'start_end')){
+            Schema::table('requests', function (Blueprint $table){
+                DB::statement('ALTER TABLE `requests` CHANGE `start_end` `end_at` DATETIME;');
             });
         }
     }
