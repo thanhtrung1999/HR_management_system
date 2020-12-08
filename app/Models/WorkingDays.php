@@ -19,18 +19,23 @@ class WorkingDays extends Model
         'checkout_time',
     ];
 
-    public function employee(){
+    private const USERTYPE_EMPLOYEE = 0;
+    private const USERTYPE_MANAGER = 1;
+
+    public function employee()
+    {
         return $this->belongsTo('App\Models\Employee', 'employee_id', 'id');
     }
 
-    public function addCheckIn($employeeId, $checkinDay, $checkinTime){
+    public function addCheckIn($employeeId, $checkinDay, $checkinTime)
+    {
         $workingDaysModel = new WorkingDays();
         $workingDaysModel->employee_id = $employeeId;
         $workingDaysModel->working_on_day = $checkinDay;
         $workingDaysModel->checkin_time = $checkinTime;
         $workingDaysModel->save();
 
-        if($workingDaysModel->id){
+        if ($workingDaysModel->id) {
             return true;
         } else {
             return false;
@@ -50,7 +55,8 @@ class WorkingDays extends Model
         ])->count();
     }
 
-    public function isCheckoutNow($employeeId, $dayNow){
+    public function isCheckoutNow($employeeId, $dayNow)
+    {
         return WorkingDays::where([
             ['employee_id', '=', $employeeId],
             ['working_on_day', '=', $dayNow],
@@ -72,18 +78,68 @@ class WorkingDays extends Model
         $workingDay->checkout_time = $checkoutTime;
         $workingDay->save();
 
-        if ($workingDay->checkout_time != null){
+        if ($workingDay->checkout_time != null) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function getEmployeeWorkDays($employeeId, $month)
+    public function getEmployeeWorkSchedulesInMonth($employeeId, $month, $year)
     {
         return DB::table('working_days')
             ->where('employee_id', '=', $employeeId)
             ->whereRaw("MONTH(`working_on_day`) = $month")
+            ->whereRaw("YEAR(`working_on_day`) = $year")
             ->get();
+    }
+
+    public function getTotalEmployeesWorkTime($managerId, $month, $year)
+    {
+        return DB::table('employees')
+            ->join('working_days', 'employees.id', '=', 'working_days.employee_id')
+            ->join('departments', 'employees.department_id', '=', 'departments.id')
+            ->select(
+                "employees.id as employee_id",
+                'employees.first_name',
+                'employees.last_name',
+                'employees.email',
+                'employees.position',
+                'departments.name as department_name'
+            )
+            ->selectRaw("COUNT(DISTINCT working_on_day) as 'work_days_in_month'")
+            ->selectRaw("(SUM(time_to_sec(TIMEDIFF(checkout_time, checkin_time)))/3600-1*COUNT(DISTINCT working_on_day)) as 'work_hours_in_month'")
+            ->where('employees.user_type', '=', self::USERTYPE_EMPLOYEE)
+            ->where('departments.employee_id', '=', $managerId)
+            ->whereRaw("MONTH(`working_on_day`) = $month")
+            ->whereRaw("YEAR(`working_on_day`) = $year")
+            ->whereRaw("checkout_time is NOT NULL")
+            ->groupBy('employees.id')
+            ->get();
+    }
+
+    public function getTotalEmployeeWorkTimeByEmployeeId($employeeId, $managerId, $month, $year)
+    {
+        return DB::table('employees')
+            ->join('working_days', 'employees.id', '=', 'working_days.employee_id')
+            ->join('departments', 'employees.department_id', '=', 'departments.id')
+            ->select(
+                "employees.id as employee_id",
+                'employees.first_name',
+                'employees.last_name',
+                'employees.email',
+                'employees.position',
+                'departments.name as department_name'
+            )
+            ->selectRaw("COUNT(DISTINCT working_on_day) as 'work_days_in_month'")
+            ->selectRaw("(SUM(time_to_sec(TIMEDIFF(checkout_time, checkin_time)))/3600-1*COUNT(DISTINCT working_on_day)) as 'work_hours_in_month'")
+            ->where('employees.user_type', '=', self::USERTYPE_EMPLOYEE)
+            ->where('employees.id', '=', $employeeId)
+            ->where('departments.employee_id', '=', $managerId)
+            ->whereRaw("MONTH(`working_on_day`) = $month")
+            ->whereRaw("YEAR(`working_on_day`) = $year")
+            ->whereRaw("checkout_time is NOT NULL")
+            ->groupBy('employees.id')
+            ->first();
     }
 }

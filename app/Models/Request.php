@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\SendEmailRequestOfEmployee;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,12 @@ class Request extends Model
         'content',
     ];
 
-    public function employees(){
+    private const STATUS_UNAPPROVED = 0;
+    private const STATUS_APPROVED = 1;
+    private const STATUS_CANCEL = 2;
+
+    public function employees()
+    {
         return $this->belongsTo('App\Models\Employee', 'employee_id', 'id');
     }
 
@@ -36,7 +42,7 @@ class Request extends Model
         $requestModel->fill($data);
         $requestModel->save();
 
-        if ($requestModel->id){
+        if ($requestModel->id) {
             $request = $this->getRequestsById($requestModel->id);
             $created_at = $request->created_at;
             $employeeName = auth('employees')->user()->first_name . ' ' . auth('employees')->user()->last_name;
@@ -47,7 +53,8 @@ class Request extends Model
             $rootModel = new Root();
             $root = $rootModel->getRoot();
             $emailRoot = $root->email;
-            $emailManager = (empty(auth('employees')->user()->employeeOfDepartment->manager)) ? '' : auth('employees')->user()->employeeOfDepartment->manager->email;
+            $emailManager = (empty(auth('employees')->user()->employeeOfDepartment->manager))
+                ? '' : auth('employees')->user()->employeeOfDepartment->manager->email;
             $urlRoot = route('root.getListRequests');
             $urlManager = route('manager.getListRequests');
 
@@ -62,11 +69,12 @@ class Request extends Model
                 'url_root' => $urlRoot,
                 'url_manager' => $urlManager
             ];
-            dispatch(new \App\Jobs\SendEmailRequestOfEmployee($data));
+            dispatch(new SendEmailRequestOfEmployee($data));
         }
     }
 
-    public function deleteRequest($id){
+    public function deleteRequest($id)
+    {
         return Request::destroy($id);
     }
 
@@ -85,16 +93,24 @@ class Request extends Model
         return DB::table('employees')
             ->join('requests', 'employees.id', '=', 'requests.employee_id')
             ->join('departments', 'employees.department_id', '=', 'departments.id')
-            ->select("requests.*", "employees.first_name", "employees.last_name", "employees.email", "employees.position", "departments.id AS department_id", "departments.name AS department_name")
+            ->select(
+                "requests.*",
+                "employees.first_name",
+                "employees.last_name",
+                "employees.email",
+                "employees.position",
+                "departments.id AS department_id",
+                "departments.name AS department_name"
+            )
             ->where('departments.employee_id', '=', $managerId)
             ->get();
     }
 
-    public function getApprovedRequest($employeeId)
+    public function getApprovedRequests($employeeId)
     {
         return Request::where([
             'employee_id' => $employeeId,
-            'status' => 1
+            'status' => self::STATUS_APPROVED
         ])->get();
     }
 }
