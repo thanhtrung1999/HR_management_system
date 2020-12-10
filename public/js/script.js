@@ -23,9 +23,9 @@ $(document).ready(function (){
                 time: `${hour}:${minutes}:${seconds}`,
             },
             success: function (response){
-                load_calendar();
                 if(parseInt(response) === 1){
                     console.log('Done!');
+                    load_calendar();
                 } else {
                     console.log('Lỗi gì đó...');
                 }
@@ -36,35 +36,34 @@ $(document).ready(function (){
         });
     });
 
-    // $('.container-calendar .calendar-header .btn-check-out').click(function (){
-    //     alert('Done!');
-    // });
     $(document).on('click', '.btn-check-out', function () {
-        console.log(`${base_url}check-out\n${today}`);
+        let r = confirm('Do you want to check-out now?');
+        if (r === true) {
+            console.log(`${base_url}check-out\n${today}`);
 
-        $.ajax({
-            type: 'POST',
-            url: `${base_url}check-out`,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            },
-            data: {
-                today: today,
-                day: `${year}-${month}-${date}`,
-                time: `${hour}:${minutes}:${seconds}`,
-            },
-            success: function (response){
-                load_calendar();
-                if(parseInt(response) === 1){
-                    console.log('Done!');
-                } else {
-                    console.log('Lỗi gì đó...');
+            $.ajax({
+                type: 'POST',
+                url: `${base_url}check-out`,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+                data: {
+                    today: today,
+                    day: `${year}-${month}-${date}`,
+                    time: `${hour}:${minutes}:${seconds}`,
+                },
+                success: function (response){
+                    if(parseInt(response) === 1){
+                        console.log('Done!');
+                        load_calendar();
+                    } else {
+                        console.log('Lỗi gì đó...');
+                    }
+                },
+                error: function (){
+                    console.log('Error');
                 }
-            },
-            error: function (){
-                console.log('Error');
-            }
-        });
-
+            });
+        }
     })
 });

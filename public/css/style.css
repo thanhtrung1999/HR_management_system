@@ -36,7 +36,81 @@ html, body{
     border: none;
     outline: none;
 }
-
+.reset-password-container{
+    background-color: #343a40;
+}
+.form-reset-password{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 10px 10px 27px 0px rgba(122,122,122,1);
+    background-color: var(--color-white);
+}
+.btn-in-out{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+div.working-times-in-out{
+    margin-top: .8rem;
+}
+div.working-times-in-out p{
+    position: absolute;
+    margin: 0;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    background-color: #47ffc0;
+    padding: 4px;
+}
+div.working-times-in-out p.checkout-time {
+    position: relative!important;
+    float: right;
+}
+.profile-wrapper {
+    background-color: #f1f1f1;
+    margin: 1rem;
+    border-radius: 5px;
+}
+.profile-wrapper > h4 {
+    padding: 1rem;
+    border-bottom: 1px solid #e4e4e4;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+.profile-content{
+    padding: 1rem;
+}
+.employee-info-wrapper {
+    background-color: #343a40;
+    color: var(--color-white);
+    margin-bottom: 2rem;
+    border-radius: .4rem;
+}
+.employee-info-wrapper h4{
+    padding: 1rem;
+    border-bottom: 2px solid;
+}
+.employee-info__table {
+    padding: 1.5rem 1rem;
+}
+.create-request-container {
+    margin: 2rem 0;
+    background-color: #e6e6e6;
+    border-radius: .6rem;
+}
+.create-request-container h4 {
+    padding: 1.5rem;
+    border-bottom: 2px solid #dcdcdc;
+    font-weight: 600;
+}
+.create-request-container .form-create {
+    padding: 1.5rem;
+}
 @media (max-width: 376px){
     :root{
         --font-size-main: 10px;
