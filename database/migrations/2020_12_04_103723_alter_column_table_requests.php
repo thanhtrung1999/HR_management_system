@@ -14,8 +14,8 @@ class AlterColumnTableRequests extends Migration
      */
     public function up()
     {
-        if (Schema::hasColumn('requests', 'start_end')){
-            Schema::table('requests', function (Blueprint $table){
+        if (Schema::hasColumn('requests', 'start_end')) {
+            Schema::table('requests', function (Blueprint $table) {
                 DB::statement('ALTER TABLE `requests` CHANGE `start_end` `end_at` DATETIME;');
             });
         }

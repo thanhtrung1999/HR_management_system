@@ -13,22 +13,22 @@ class UpgradeForeignkey extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('employees')){
-            if(Schema::hasTable('departments')){
-                Schema::table('employees', function (Blueprint $table){
+        if (Schema::hasTable('employees')) {
+            if (Schema::hasTable('departments')) {
+                Schema::table('employees', function (Blueprint $table) {
                     $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
                 });
-                Schema::table('departments', function (Blueprint $table){
+                Schema::table('departments', function (Blueprint $table) {
                     $table->foreign('employee_id')->references('id')->on('employees')->onDelete('no action');
                 });
             }
-            if(Schema::hasTable('working_days')){
-                Schema::table('working_days', function (Blueprint $table){
+            if (Schema::hasTable('working_days')) {
+                Schema::table('working_days', function (Blueprint $table) {
                     $table->foreign('employee_id')->references('id')->on('employees')->onDelete('no action');
                 });
             }
-            if (Schema::hasTable('requests')){
-                Schema::table('requests', function (Blueprint $table){
+            if (Schema::hasTable('requests')) {
+                Schema::table('requests', function (Blueprint $table) {
                     $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
                 });
             }

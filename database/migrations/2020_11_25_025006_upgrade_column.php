@@ -14,8 +14,8 @@ class UpgradeColumn extends Migration
      */
     public function up()
     {
-        if(Schema::hasColumn('employees', 'position')){
-            Schema::table('employees', function (Blueprint $table){
+        if (Schema::hasColumn('employees', 'position')) {
+            Schema::table('employees', function (Blueprint $table) {
                 DB::statement('ALTER TABLE `employees` MODIFY COLUMN `position` VARCHAR(100)');
             });
         }

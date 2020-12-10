@@ -14,7 +14,7 @@ class RecreateWorkingDaysTable extends Migration
     public function up()
     {
         Schema::dropIfExists('working_days');
-        if(!Schema::hasTable('working_days')){
+        if (!Schema::hasTable('working_days')) {
             Schema::create('working_days', function (Blueprint $table) {
                 $table->increments('id');
                 $table->unsignedInteger('employee_id')->nullable();
@@ -33,6 +33,5 @@ class RecreateWorkingDaysTable extends Migration
      */
     public function down()
     {
-
     }
 }

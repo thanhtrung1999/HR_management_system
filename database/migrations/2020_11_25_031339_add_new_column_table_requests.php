@@ -13,8 +13,8 @@ class AddNewColumnTableRequests extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('requests')){
-            Schema::table('requests', function (Blueprint $table){
+        if (Schema::hasTable('requests')) {
+            Schema::table('requests', function (Blueprint $table) {
                 $table->tinyInteger('approval_by')->nullable()->after('status');
             });
         }

@@ -13,8 +13,8 @@ class AddColumnEmailVerifyToken extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('employees')){
-            Schema::table('employees', function (Blueprint $table){
+        if (Schema::hasTable('employees')) {
+            Schema::table('employees', function (Blueprint $table) {
                 $table->string('email_verify_token')->nullable()->unique()->after('email_verified_at');
             });
         }

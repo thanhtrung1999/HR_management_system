@@ -13,8 +13,8 @@ class AddNewColumnTableDepartments extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('departments')){
-            Schema::table('departments', function (Blueprint $table){
+        if (Schema::hasTable('departments')) {
+            Schema::table('departments', function (Blueprint $table) {
                 $table->softDeletes()->after('updated_at');
             });
         }

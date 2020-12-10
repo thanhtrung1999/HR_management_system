@@ -13,8 +13,8 @@ class AddNewColumnTableEmployees extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('employees')){
-            Schema::table('employees', function (Blueprint $table){
+        if (Schema::hasTable('employees')) {
+            Schema::table('employees', function (Blueprint $table) {
                 $table->timestamp('email_verified_at')->nullable()->after('email');
             });
         }
