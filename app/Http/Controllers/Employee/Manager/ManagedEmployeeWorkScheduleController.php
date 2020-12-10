@@ -77,7 +77,6 @@ class ManagedEmployeeWorkScheduleController extends Controller
             ];
         }
 //        dd($authorizedLeaves);
-
         $detailAuthorizedLeaves = [];
         foreach ($authorizedLeaves as $authorizedLeave) {
             $dateAt = $authorizedLeave['start_at']['date'];
@@ -99,7 +98,7 @@ class ManagedEmployeeWorkScheduleController extends Controller
                 $detailAuthorizedLeaves[] = $day;
             }
         }
-
+//        dd($authorizedLeaves, $detailAuthorizedLeaves);
         /* Lấy ra các ngày nghỉ không phép */
         $unauthorizedLeaves = array_diff($days, $workDays, $daysWeekend, $detailAuthorizedLeaves);
         $collectionUnauthorizedLeaves = collect($unauthorizedLeaves);
@@ -126,7 +125,6 @@ class ManagedEmployeeWorkScheduleController extends Controller
 
     public function exportTimeSheetEmployees()
     {
-        $data = session('data_timesheet');
-        return Excel::download(new TimeSheetExportView($data), 'timesheet.xlsx');
+        return Excel::download(new TimeSheetExportView(), 'timesheet.xlsx');
     }
 }

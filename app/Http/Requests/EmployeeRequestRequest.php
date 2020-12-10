@@ -26,7 +26,7 @@ class EmployeeRequestRequest extends FormRequest
         return [
             'content' => 'required',
             'start_at' => 'required',
-            'end_at' => 'required'
+            'end_at' => 'required|after:start_at'
         ];
     }
 
@@ -35,7 +35,7 @@ class EmployeeRequestRequest extends FormRequest
         return [
             'content.required' => 'Trường này là bắt buộc',
             'start_at.required' => 'Trường này là bắt buộc',
-            'end_at.required' => 'Trường này là bắt buộc'
+            'end_at.required' => 'Trường này là bắt buộc',
         ];
     }
 }

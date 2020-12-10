@@ -51,7 +51,7 @@ class Employee extends Authenticatable implements MustVerifyEmail
 
     public function getListEmployees()
     {
-        return Employee::paginate(10);
+        return Employee::all();
     }
 
     public function getEmployeesIsManager()
@@ -138,6 +138,6 @@ class Employee extends Authenticatable implements MustVerifyEmail
 
     public function getListEmployeesByDepartmentId($departmentId)
     {
-        return Employee::where('department_id', $departmentId)->paginate(10);
+        return Employee::where('department_id', $departmentId)->get();
     }
 }

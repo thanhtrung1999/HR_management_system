@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -116,6 +117,15 @@ class WorkingDays extends Model
             ->whereRaw("checkout_time is NOT NULL")
             ->groupBy('employees.id')
             ->get();
+        /*$day = Carbon::now();
+        $timesheet = WorkingDays::select('working_days.*',
+            DB::raw('(TIMEDIFF(checkout_time, checkin_time)) as sum_time_work_day'),
+            DB::raw('(TIME_TO_SEC(TIMEDIFF(checkout_time, checkin_time))) as second_time_in_work_day')
+        )
+            ->whereDate('working_on_day', '>=', $day->startOfMonth()->format('Y-m-d H:i:s'))
+            ->whereDate('working_on_day', '<=', $day->endOfMonth()->format('Y-m-d H:i:s'))
+            ->get()->groupBy('employee_id');
+        dd($timesheet);*/
     }
 
     public function getTotalEmployeeWorkTimeByEmployeeId($employeeId, $managerId, $month, $year)

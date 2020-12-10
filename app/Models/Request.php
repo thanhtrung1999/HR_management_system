@@ -80,7 +80,7 @@ class Request extends Model
 
     public function getListRequests()
     {
-        return Request::paginate(10);
+        return Request::all();
     }
 
     public function getRequestsById($id)
