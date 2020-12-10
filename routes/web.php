@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\Root\DepartmentController;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,10 +27,10 @@ Route::post('login', [App\Http\Controllers\AuthController::class, 'postLogin']);
 Route::get('logout', [App\Http\Controllers\AuthController::class, 'logout']);
 
 // root
-Route::group(['prefix' => 'root', 'middleware' => 'checkRootLogin'], function (){
+Route::group(['prefix' => 'root', 'middleware' => 'checkRootLogin'], function () {
     Route::resource('employees', \App\Http\Controllers\Root\EmployeeController::class)->except(['show']);
     Route::resource('departments', DepartmentController::class)->except(['show']);
-    Route::group(['prefix' => 'requests'], function (){
+    Route::group(['prefix' => 'requests'], function () {
         Route::get('/', [\App\Http\Controllers\Root\RequestController::class, 'getListRequests'])->name('root.getListRequests');
         Route::get('approval/{id}', [\App\Http\Controllers\Root\RequestController::class, 'approvalRequest'])->name('root.approvalRequest');
         Route::get('cancel/{id}', [\App\Http\Controllers\Root\RequestController::class, 'cancelRequest'])->name('root.cancelRequest');
@@ -42,18 +43,19 @@ Route::post('check-in', [WorkScheduleController::class, 'checkIn']);
 Route::post('check-out', [WorkScheduleController::class, 'checkOut']);
 Route::post('load-calendar', [WorkScheduleController::class, 'loadCalendar']);
 
-Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], function (){
-    Route::group(['prefix'=>'manager', 'middleware' => 'checkManager'], function (){
-        Route::group(['prefix'=>'employees'], function (){
+Route::group(['prefix' => 'employee', 'middleware' => 'checkEmployeeLogin'], function () {
+    Route::group(['prefix'=>'manager', 'middleware' => 'checkManager'], function () {
+        Route::group(['prefix'=>'employees'], function () {
             Route::get('/', [EmployeeController::class, 'getEmployees'])->name('manager.listEmployees');
             Route::get('detail/{id}', [EmployeeController::class, 'detailEmployee'])->name('manager.detailEmployee');
             Route::get('export', [EmployeeController::class, 'exportEmployee'])->name('manager.exportEmployee');
         });
-        Route::group(['prefix'=>'employees-work-schedules'], function (){
+        Route::group(['prefix'=>'employees-work-schedules'], function () {
             Route::get('/', [ManagedEmployeeWorkScheduleController::class, 'getEmployeesWorkSchedule'])->name('manager.getWorkSchedule');
             Route::get('detail/{id}', [ManagedEmployeeWorkScheduleController::class, 'getDetailWorkScheduleOfEmployee'])->name('manager.getDetailWorkSchedule');
+            Route::get('export', [ManagedEmployeeWorkScheduleController::class, 'exportTimeSheetEmployees'])->name('manager.exportTimeSheetEmployees');
         });
-        Route::group(['prefix' => 'requests'], function (){
+        Route::group(['prefix' => 'requests'], function () {
             Route::get('/', [ManagedEmployeeRequestController::class, 'getListRequests'])->name('manager.getListRequests');
             Route::get('approval/{id}', [ManagedEmployeeRequestController::class, 'approvalRequest'])->name('manager.approvalRequest');
             Route::get('cancel/{id}', [ManagedEmployeeRequestController::class, 'cancelRequest'])->name('manager.cancelRequest');
