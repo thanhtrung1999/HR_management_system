@@ -79,7 +79,6 @@
 <!-- DataTables -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<!--<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>-->
 <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
@@ -90,22 +89,15 @@
 <!--My SCRIPT-->
 @yield('script')
 <script src="js/script.js"></script>
-<!-- page script -->
-<script>
-    $(function () {
-        $("#orders-table").DataTable({
-            "responsive": true,
-            "autoWidth": false,
-        });
-        $('#products-table').DataTable({
-            "paging": false,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
+<script type="text/javascript">
+    $('.table-content table.table').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": true,
+        "responsive": true,
     });
 </script>
 </body>

@@ -31,7 +31,7 @@
                      with font-awesome or any other icon font library -->
                 <li class="nav-item @yield('active-link-employees')">
                     <a class="nav-link" href="{{route('employees.index')}}">
-                        <i class="fa fa-th"></i> <span>Quản lý nhân viên</span>
+                        <i class="fas fa-users"></i> <span>Quản lý nhân viên</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
                         </span>
@@ -39,15 +39,15 @@
                 </li>
                 <li class="nav-item @yield('active-link-departments')">
                     <a class="nav-link" href="{{route('departments.index')}}">
-                        <i class="fa fa-code"></i> <span>Quản lý phòng ban</span>
+                        <i class="fa fa-th"></i> <span>Quản lý phòng ban</span>
                         <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
                         </span>
                     </a>
                 </li>
                 <li class="nav-item @yield('active-link-requests')">
-                    <a class="nav-link" href="{{route('requests.index')}}">
-                        <i class="fas fa-images" style="width: 20px" aria-hidden="true"></i> <span>Yêu cầu cần duyệt</span>
+                    <a class="nav-link" href="{{route('root.getListRequests')}}">
+                        <i class="fas fa-calendar-check"></i> <span>Yêu cầu cần duyệt</span>
                         <span class="pull-right-container"></span>
                     </a>
                 </li>
@@ -90,7 +90,7 @@
                          with font-awesome or any other icon font library -->
                     <li class="nav-item @yield('active-link-calendar')">
                         <a class="nav-link" href="">
-                            <i class="fa fa-th"></i> <span>Lịch làm việc</span>
+                            <i class="fas fa-calendar-alt"></i> <span>Lịch làm việc</span>
                             <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
                         </span>
@@ -99,15 +99,23 @@
                     @if(auth('employees')->user()->user_type == 1)
                         <li class="nav-item @yield('active-link-list-employees')">
                             <a class="nav-link" href="{{route('manager.listEmployees')}}">
-                                <i class="fa fa-th"></i> <span>Quản lý nhân viên</span>
+                                <i class="fas fa-users"></i> <span>Quản lý nhân viên</span>
                                 <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
                         </span>
                             </a>
                         </li>
                         <li class="nav-item @yield('active-link-working-schedule')">
-                            <a class="nav-link" href="{{route('employees-work-schedules.index')}}">
-                                <i class="fa fa-th"></i> <span>Quản lý lịch làm việc của nhân viên</span>
+                            <a class="nav-link" href="{{route('manager.getWorkSchedule')}}">
+                                <i class="far fa-calendar-alt"></i> <span>Quản lý lịch làm việc của nhân viên</span>
+                                <span class="pull-right-container">
+              <!--<small class="label pull-right bg-green">new</small>-->
+                        </span>
+                            </a>
+                        </li>
+                        <li class="nav-item @yield('active-link-requests-employees')">
+                            <a class="nav-link" href="{{route('manager.getListRequests')}}">
+                                <i class="fas fa-calendar-check"></i> <span>Yêu cầu cần duyệt</span>
                                 <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
                         </span>
@@ -116,7 +124,7 @@
                     @endif
                     <li class="nav-item @yield('active-link-requests')">
                         <a class="nav-link" href="{{route('employee.listRequests')}}">
-                            <i class="fa fa-code"></i> <span>Danh sách yêu cầu</span>
+                            <i class="fas fa-calendar"></i> <span>Danh sách yêu cầu</span>
                             <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">new</small>-->
                         </span>

@@ -36,7 +36,7 @@
                     <label for="img-file">Avatar</label>
                     <input id="img-file" type="file" name="profile_img" class="form-control hidden"
                            onchange="changeImg(this)">
-                    <img id="avatar" class="thumbnail" style="height: 15rem" width="30%" src="{{empty(auth('employees')->user()->avatar) ? 'http://www.clker.com/cliparts/d/L/P/X/z/i/no-image-icon-hi.png' : 'images/uploads/'.auth('employees')->user()->avatar}}">
+                    <img id="avatar" class="thumbnail" style="height: 15rem; width: 15rem" src="{{empty(auth('employees')->user()->avatar) ? 'http://www.clker.com/cliparts/d/L/P/X/z/i/no-image-icon-hi.png' : 'images/uploads/'.auth('employees')->user()->avatar}}">
                     @if($errors->has('profile_img'))
                         <div class="alert alert-danger">
                             <strong>{{$errors->first('profile_img')}}</strong>

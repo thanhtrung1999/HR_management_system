@@ -19,6 +19,10 @@
                         <td>{{auth('employees')->user()->first_name}} {{auth('employees')->user()->last_name}}</td>
                     </tr>
                     <tr>
+                        <td><b>Chức vụ</b></td>
+                        <td>{{auth('employees')->user()->position}}</td>
+                    </tr>
+                    <tr>
                         <td><b>Giới tính</b></td>
                         @if(auth('employees')->user()->gender == 1)
                             <td>Nam</td>

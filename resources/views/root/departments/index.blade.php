@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody>
-            @if(!empty($departments))
+            @if($departments->isNotEmpty())
                 @foreach($departments as $department)
                     <tr>
                         <th scope="row">{{$department->id}}</th>
@@ -30,7 +30,7 @@
                         <td>{{$department->updated_at}}</td>
                         <td>
                             <a title="Update" href="{{route('departments.edit', ['department'=>$department->id])}}"><i class="fa fa-pencil-alt"></i></a> &nbsp;&nbsp;
-                            <form class="form-btn-delete" action="{{route('departments.destroy', ['department'=>$department->id])}}">
+                            <form class="form-btn-delete" action="{{route('departments.destroy', ['department'=>$department->id])}}" method="post">
                                 @method('DELETE')
                                 @csrf
                                 <button class="btn-delete-record" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"><i

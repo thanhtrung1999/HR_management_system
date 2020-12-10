@@ -6,6 +6,8 @@
             <p><b>Email</b>: <span>{{$totalEmployeeWorkTime->email}}</span></p>
             <p><b>Chức vụ</b>: <span>{{$totalEmployeeWorkTime->position}}</span></p>
             <p><b>Phòng ban</b>: <span>{{$totalEmployeeWorkTime->department_name}}</span></p>
+            <p><b>Số ngày làm việc trong tháng</b>: <span>{{$totalEmployeeWorkTime->work_days_in_month}}</span></p>
+            <p><b>Số giờ làm việc trong tháng</b>: <span>{{$totalEmployeeWorkTime->work_hours_in_month}}</span></p>
         </div>
         <div class="col-md-6">
             <p><b>Số ngày nghỉ</b>:</p>
@@ -28,7 +30,7 @@
         @foreach($days as $index => $day)
             <tr>
                 <td>{{$day}}</td>
-                <?php
+                @php
                 $checkinTime = '';
                 $checkoutTime = '';
                 $isDayOffStart = '';
@@ -50,22 +52,14 @@
                         }
                     }
                 }
-                if (!empty($authorizedLeaves) && !empty($detailAuthorizedLeaves)) {
-                    foreach ($authorizedLeaves as $authorizedLeaf) {
-                        foreach ($detailAuthorizedLeaves as $detailAuthorizedLeaf) {
-                            if ($day == $detailAuthorizedLeaf) {
-                                if ($day == $authorizedLeaf['start_at']['date']) {
-                                    $isAuthorizedLeave = 'Nghỉ (có phép) - Từ '. $authorizedLeaf['start_at']['time'];
-                                } elseif ($day == $authorizedLeaf['end_at']['date']) {
-                                    $isAuthorizedLeave = 'Nghỉ (có phép) - Đến '. $authorizedLeaf['end_at']['time'];
-                                } else {
-                                    $isAuthorizedLeave = 'Nghỉ (có phép)';
-                                }
-                            }
+                if (!empty($detailAuthorizedLeaves)) {
+                    foreach ($detailAuthorizedLeaves as $detailAuthorizedLeaf) {
+                        if ($day == $detailAuthorizedLeaf) {
+                            $isAuthorizedLeave = 'Nghỉ (có phép)';
                         }
                     }
                 }
-                ?>
+                @endphp
                 <td>
                     <span class="checkin-time">{{$checkinTime}}</span>
                     <span class="authorized-leave">{{$isAuthorizedLeave}}</span>

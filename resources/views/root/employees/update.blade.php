@@ -77,7 +77,7 @@
             <?php
             $checkedMale = '';
             $checkedFemale = '';
-            if ($employee->gender == 1){
+            if ($employee->gender == 1) {
                 $checkedMale = 'checked';
             } else {
                 $checkedFemale = 'checked';
@@ -92,7 +92,7 @@
             <?php
             $checkedEmployee = '';
             $checkedManager = '';
-            if ($employee->user_type == 0){
+            if ($employee->user_type == 0) {
                 $checkedEmployee = 'checked';
             } else {
                 $checkedManager = 'checked';
