@@ -18,6 +18,7 @@ class RootSeeder extends Seeder
         DB::table('root')->delete();
         DB::table('root')->insert([
             ['id'=>1, 'email'=>'root@gmail.com', 'password'=>Hash::make('root123')],
+            ['id'=>2, 'email'=>'darkprince411999@gmail.com', 'password'=>Hash::make('root123')],
         ]);
     }
 }
