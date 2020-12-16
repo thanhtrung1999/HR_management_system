@@ -1,52 +1,37 @@
-version: "3"
+version: "3.9"
 
 #NETWORK
 networks:
-  apache_php-fpm7.4_mysql:
+  my-network:
     driver: bridge
 
-#VOLUMN
-volumes:
-  dir-site:
-    driver_opts:
-      device: C:\xampp\htdocs\HR_management_system\
-      o: bind
-
 services:
-  # container php
-  my-php:
-    container_name: php-product
+  # container webserver
+  web:
+    container_name: webserver
     build:
-      dockerfile: Dockerfile
-      context: ./php/
-    hostname: php
+      dockerfile: C:\xampp\htdocs\HR_management_system\docker\dockerfile\web.dockerfile
+      context: ../.
+    hostname: web
     restart: always
     networks:
-      - apache_php-fpm7.4_mysql
+      - my-network
     volumes:
-      - dir-site:/home/sites/
-  # container apache
-  my-httpd:
-    container_name: httpd-product
-    image: httpd:latest
-    hostname: httpd
-    restart: always
-    networks:
-      - apache_php-fpm7.4_mysql
-    volumes:
-      - dir-site:/home/sites/
-      - ./config/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ../.:/var/www/html/hr_management_system
+      - ./config/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
     ports:
       - "8888:80"
       - "443:443"
-  # container mysql
-  my-mysql:
-    container_name: mysql-product
+    links:
+      - mysql
+  # container db
+  mysql:
+    container_name: db
     image: mysql:latest
     hostname: mysql
     restart: always
     networks:
-      - apache_php-fpm7.4_mysql
+      - my-network
     volumes:
       - ./mysql/db/:/var/lib/mysql
       - ./config/my.cnf:/etc/mysql/my.cnf
@@ -55,3 +40,5 @@ services:
       - MYSQL_DATABASE=hr_management_system
       - MYSQL_USER=member
       - MYSQL_PASSWORD=member@123
+    ports:
+      - "3307:3306"
