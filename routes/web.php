@@ -76,3 +76,6 @@ Route::post('verify-account/{id}/{token}', [ResetPasswordController::class, 'cha
 Route::post('reset-password', [ResetPasswordController::class, 'resetPasswordByRoot']);
 Route::get('reset-password/{id}/{token}', [MailController::class, 'getFormResetByRoot'])->name('reset-password');
 Route::post('send-data-reset/{id}/{token}', [ResetPasswordController::class, 'sendDataResetPass'])->name('sendDataResetPass');
+Route::get('test-url', function (){
+    echo "Test";
+});
