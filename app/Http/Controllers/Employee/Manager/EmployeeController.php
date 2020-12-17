@@ -12,6 +12,9 @@ class EmployeeController extends Controller
     {
         $managerId = auth('employees')->user()->id;
         $department = $this->departmentModel->getDepartmentByManagerId($managerId);
+        if (empty($department)) {
+            return redirect()->back()->with('error', 'Bạn chưa quản lý phòng ban nào');
+        }
         $employees = $this->employeeModel->getListEmployeesByDepartmentId($department->id);
         return view('employees.managers.employees.index', [
             'employees' => $employees

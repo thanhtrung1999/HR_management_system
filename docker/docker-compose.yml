@@ -2,7 +2,7 @@ version: "3.9"
 
 #NETWORK
 networks:
-  my-network:
+  web-network:
     driver: bridge
 
 services:
@@ -10,18 +10,32 @@ services:
   web:
     container_name: webserver
     build:
-      dockerfile: C:\xampp\htdocs\HR_management_system\docker\dockerfile\web.dockerfile
+      dockerfile: C:\xampp\htdocs\HR_management_system\docker\dockerfile\webserver.dockerfile
       context: ../.
     hostname: web
     restart: always
     networks:
-      - my-network
+      - web-network
     volumes:
       - ../.:/var/www/html/hr_management_system
       - ./config/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
     ports:
-      - "8888:80"
-      - "443:443"
+      - "9999:80"
+      - "4488:443"
+    links:
+      - mysql
+  queue:
+    container_name: webqueue
+    build:
+      dockerfile: C:\xampp\htdocs\HR_management_system\docker\dockerfile\webserver.dockerfile
+      context: ../.
+    restart: always
+    networks:
+      - web-network
+    volumes:
+      - ../.:/var/www/html/hr_management_system
+      - ./config/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+    command: php artisan queue:work --queue=high,default
     links:
       - mysql
   # container db
@@ -31,7 +45,7 @@ services:
     hostname: mysql
     restart: always
     networks:
-      - my-network
+      - web-network
     volumes:
       - ./mysql/db/:/var/lib/mysql
       - ./config/my.cnf:/etc/mysql/my.cnf
@@ -41,4 +55,4 @@ services:
       - MYSQL_USER=member
       - MYSQL_PASSWORD=member@123
     ports:
-      - "3307:3306"
+      - "3308:3306"

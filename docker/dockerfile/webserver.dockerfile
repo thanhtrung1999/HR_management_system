@@ -27,4 +27,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 WORKDIR /var/www/html/hr_management_system
 COPY . /var/www/html/hr_management_system
 
+#CMD php artisan queue:work --queue=high,default
+
 EXPOSE 80
