@@ -10,7 +10,7 @@ services:
   web:
     container_name: webserver
     build:
-      dockerfile: C:\xampp\htdocs\HR_management_system\docker\dockerfile\webserver.dockerfile
+      dockerfile: ./docker/dockerfile/webserver.dockerfile
       context: .
     hostname: web
     restart: always
@@ -27,7 +27,7 @@ services:
   queue:
     container_name: webqueue
     build:
-      dockerfile: C:\xampp\htdocs\HR_management_system\docker\dockerfile\webserver.dockerfile
+      dockerfile: ./docker/dockerfile/webserver.dockerfile
       context: .
     restart: always
     networks:
