@@ -11,14 +11,14 @@ services:
     container_name: webserver
     build:
       dockerfile: C:\xampp\htdocs\HR_management_system\docker\dockerfile\webserver.dockerfile
-      context: ../.
+      context: .
     hostname: web
     restart: always
     networks:
       - web-network
     volumes:
-      - ../.:/var/www/html/hr_management_system
-      - ./config/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - .:/var/www/html/hr_management_system
+      - ./docker/config/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
     ports:
       - "9999:80"
       - "4488:443"
@@ -28,13 +28,13 @@ services:
     container_name: webqueue
     build:
       dockerfile: C:\xampp\htdocs\HR_management_system\docker\dockerfile\webserver.dockerfile
-      context: ../.
+      context: .
     restart: always
     networks:
       - web-network
     volumes:
-      - ../.:/var/www/html/hr_management_system
-      - ./config/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - .:/var/www/html/hr_management_system
+      - ./docker/config/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
     command: php artisan queue:work --queue=high,default
     links:
       - mysql
@@ -47,8 +47,8 @@ services:
     networks:
       - web-network
     volumes:
-      - ./mysql/db/:/var/lib/mysql
-      - ./config/my.cnf:/etc/mysql/my.cnf
+      - ./docker/mysql/db/:/var/lib/mysql
+      - ./docker/config/my.cnf:/etc/mysql/my.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=root@123
       - MYSQL_DATABASE=hr_management_system
