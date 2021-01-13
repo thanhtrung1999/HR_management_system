@@ -1,15 +1,16 @@
 $(document).ready(function (){
-    let base_url = $('base').attr('href');
-    let today = new Date();
-    let date = today.getDate();
-    let month = today.getMonth()+1;
-    let year = today.getFullYear();
-    let hour = today.getHours();
-    let minutes = today.getMinutes();
-    let seconds = today.getSeconds();
+    const base_url = $('base').attr('href');
+    const today = new Date();
+    const date = today.getDate();
+    const month = today.getMonth()+1;
+    const year = today.getFullYear();
+    const hour = today.getHours();
+    const minutes = today.getMinutes();
+    const seconds = today.getSeconds();
 
     $('.container-calendar .calendar-header .btn-check-in').click(function (){
         console.log(`${base_url}check-in\n${today}`);
+        $(this).addClass('pending-checkin').text("Pending...");
 
         $.ajax({
             type: 'POST',
@@ -22,12 +23,13 @@ $(document).ready(function (){
                 day: `${year}-${month}-${date}`,
                 time: `${hour}:${minutes}:${seconds}`,
             },
-            success: function (response){
+            success: response => {
                 if(parseInt(response) === 1){
                     console.log('Done!');
-                    load_calendar();
+                    //loadCalendar();
                 } else {
-                    console.log('Lỗi gì đó...');
+                    console.log('Lỗi gì đó... ' + response);
+                    $(this).removeClass('pending-checkin').text('Check in');
                 }
             },
             error: function (){
@@ -40,6 +42,7 @@ $(document).ready(function (){
         let r = confirm('Do you want to check-out now?');
         if (r === true) {
             console.log(`${base_url}check-out\n${today}`);
+            $(this).addClass('pending-checkout').text("Pending...");
 
             $.ajax({
                 type: 'POST',
@@ -52,12 +55,13 @@ $(document).ready(function (){
                     day: `${year}-${month}-${date}`,
                     time: `${hour}:${minutes}:${seconds}`,
                 },
-                success: function (response){
+                success: response => {
                     if(parseInt(response) === 1){
                         console.log('Done!');
-                        load_calendar();
+                        //loadCalendar();
                     } else {
                         console.log('Lỗi gì đó...');
+                        $(this).removeClass('pending-checkout').text('Check out');
                     }
                 },
                 error: function (){

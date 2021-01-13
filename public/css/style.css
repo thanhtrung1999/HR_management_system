@@ -111,6 +111,16 @@ div.working-times-in-out p.checkout-time {
 .create-request-container .form-create {
     padding: 1.5rem;
 }
+.pending-checkin {
+    background-color: #899599;
+    border-color: #899599;
+    opacity: .8;
+}
+.pending-checkout {
+    background-color: #f5c948;
+    border-color: #f5c948;
+    opacity: .8;
+}
 @media (max-width: 376px){
     :root{
         --font-size-main: 10px;

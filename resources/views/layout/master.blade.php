@@ -9,25 +9,25 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- DataTables -->
-    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
     <!--    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">-->
     <!-- JQuery UI -->
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
+    <link rel="stylesheet" href="{{asset('css/jquery-ui.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/jquery-ui.theme.min.css')}}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <!-- My CSS -->
     @yield('stylesheet')
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="css/_all-skins.min.css">
+    <link rel="stylesheet" href="{{asset('css/_all-skins.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -49,7 +49,7 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="container-fluid">
+            <div id="app" class="container-fluid">
                 @yield('content')
             </div>
             <!-- /.container-fluid -->
@@ -66,29 +66,30 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="/js/app.js"></script>
 <!-- jQuery -->
-<script src="js/jquery.min.js"></script>
+{{--<script src="{{asset('js/jquery.min.js')}}"></script>--}}
 <!-- jQuery UI 1.12.1 -->
-<script src="js/jquery-ui.min.js"></script>
+{{--<script src="{{asset('js/jquery-ui.min.js')}}"></script>--}}
 <!-- Font Awesome 6 -->
 <script src="https://kit.fontawesome.com/5efd05f2e8.js" crossorigin="anonymous"></script>
 <!-- Bootstrap 4 -->
-<script src="js/bootstrap.bundle.min.js"></script>
+{{--<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>--}}
 <!-- Bootstrap 3.3.7 -->
-<script src="js/bootstrap.min.js"></script>
+{{--<script src="{{asset('js/bootstrap.min.js')}}"></script>--}}
 <!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<script src="{{asset('dist/js/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<script src="{{asset('dist/js/demo.js')}}"></script>
 {{--<!--CKEditor -->
 <script src="ckeditor/ckeditor.js"></script>--}}
 <!--My SCRIPT-->
 @yield('script')
-<script src="js/script.js"></script>
+{{--<script src="{{asset('js/script.js')}}"></script>--}}
 <script type="text/javascript">
     $('.table-content table.table').DataTable({
         "paging": true,

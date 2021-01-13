@@ -19,7 +19,9 @@
                     <th>Xác nhận bởi</th>
                     <th>Ngày tạo</th>
                     <th>Ngày cập nhật gần nhất</th>
-                    <th></th>
+                    @if($requests->isNotEmpty())
+                        <th></th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -64,7 +66,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="9"><h3 class="text-center p-4">Không có dữ liệu</h3></td>
+                        <td colspan="8"><h3 class="text-center p-4">Không có dữ liệu</h3></td>
                     </tr>
                 @endif
             </tbody>

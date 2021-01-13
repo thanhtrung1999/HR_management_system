@@ -1,7 +1,7 @@
-load_calendar();
+// loadCalendar();
 
-function load_calendar(){
-    let base_url = $('base').attr('href');
+/*function loadCalendar(){
+    const base_url = $('base').attr('href');
 
     $.ajax({
         url: `${base_url}load-calendar`,
@@ -10,7 +10,8 @@ function load_calendar(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
         },
         dataType: 'json',
-        success: function (data){
+        success: data => {
+            console.log('The returned data is being processed');
             for (let sub_data of data){
                 let checkinTime = new Date(sub_data.working_on_day + ' ' + sub_data.checkin_time);
                 let date = checkinTime.getDate();
@@ -73,13 +74,10 @@ function load_calendar(){
                     });
                 }
             }
+            console.log('Completed');
         },
         error: function (){
             console.log('Error load data');
         }
     });
-}
-
-function isCheckInToday(date, month, year, checkinDate, checkinMonth, checkinYear){
-    return date === checkinDate && month === checkinMonth && year === checkinYear;
-}
+}*/

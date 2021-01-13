@@ -44,26 +44,26 @@ function next() {
   currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
   currentMonth = (currentMonth + 1) % 12;
   showCalendar(currentMonth, currentYear);
-  load_calendar();
+  //loadCalendar();
 }
 
 function previous() {
   currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
   currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
   showCalendar(currentMonth, currentYear);
-  load_calendar();
+  //loadCalendar();
 }
 
 function jump() {
   currentYear = parseInt(selectYear.value);
   currentMonth = parseInt(selectMonth.value);
   showCalendar(currentMonth, currentYear);
-  load_calendar();
+  //loadCalendar();
 }
 
 function atNow(){
     showCalendar(currentMonth, currentYear);
-    load_calendar();
+    //loadCalendar();
 }
 
 function showCalendar(month, year) {
