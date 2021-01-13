@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Resources\RequestCollection;
 
 class RequestController extends Controller
 {
@@ -40,13 +41,19 @@ class RequestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param EmployeeRequestRequest $request
      * @return RedirectResponse
      */
     public function store(EmployeeRequestRequest $request)
     {
         $this->requestModel->createRequest($request);
         return redirect()->route('employee.listRequests')->with('success', 'Tạo yêu cầu thành công');
+    }
+
+    public function storeAPI(Request $request)
+    {
+//        $this->requestModel->createRequestApi($request);
+        return response()->json('Tạo request thành công');
     }
 
     /**
