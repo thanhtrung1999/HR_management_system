@@ -17,7 +17,7 @@
     </div>
 </div>
 <a href="{{route('manager.exportTimeSheetEmployees')}}" class="btn btn-dark">Export</a>
-<div class="table-content mt-4">
+<div class="mt-4">
     <table class="table table-hover table-bordered">
         <thead>
         <tr>
@@ -33,8 +33,6 @@
                 @php
                 $checkinTime = '';
                 $checkoutTime = '';
-                $isDayOffStart = '';
-                $isDayOffEnd = '';
                 $isUnauthorizedLeave = '';
                 $isAuthorizedLeave = '';
                 if (!empty($workDays)) {

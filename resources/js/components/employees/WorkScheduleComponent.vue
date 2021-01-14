@@ -4,8 +4,8 @@
         <div class="calendar-header position-relative row mb-3">
             <h3 id="monthAndYear"></h3>
             <div class="btn-in-out">
-                <button class="btn btn-secondary" onclick="atNow()">Today</button>
-                <button class="btn btn-secondary ml-2 btn-check-in" @click="checkIn">Check in</button>
+                <button class="btn btn-secondary" onclick="atNow()" @click="displayDataOnDom">Today</button>
+                <button-checkin @checkIn="handleCheckIn"/>
             </div>
         </div>
 
@@ -21,7 +21,7 @@
 
         <div class="footer-container-calendar">
             <label for="month">Jump To: </label>
-            <select id="month" onchange="jump()">
+            <select id="month" onchange="jump()" @change="displayDataOnDom">
                 <option value=0>Jan</option>
                 <option value=1>Feb</option>
                 <option value=2>Mar</option>
@@ -35,7 +35,7 @@
                 <option value=10>Nov</option>
                 <option value=11>Dec</option>
             </select>
-            <select id="year" onchange="jump()"></select>
+            <select id="year" onchange="jump()" @change="displayDataOnDom"></select>
         </div>
 
     </div>
@@ -53,6 +53,11 @@ const seconds = today.getSeconds()
 
 export default {
     name: "WorkScheduleComponent",
+    data() {
+        return {
+
+        }
+    },
     created() {
         this.loadCalendar()
     },
@@ -77,7 +82,7 @@ export default {
         displayDataOnDom() {
             this.$store.commit('displayDataOnDom')
         },
-        checkIn(e) {
+        handleCheckIn(e) {
             console.log(`${baseUrl}check-in\n${today}`)
             $(e.target).addClass('pending-checkin').text("Pending...")
 
@@ -102,34 +107,6 @@ export default {
             }).catch(error => {
                 console.log(`Error checkin: ${error}`)
             })
-        },
-        checkOut(e) {
-            let r = confirm('Do you want to check-out now?')
-            if (r === true) {
-                console.log(`${baseUrl}check-out\n${today}`)
-                $(e.target).addClass('pending-checkout').text("Pending...")
-
-                this.axios.post(`${baseUrl}api/check-out`, {
-                    employeeId: this.$attrs.employeeid,
-                    today: today,
-                    day: `${year}-${month}-${date}`,
-                    time: `${hour}:${minutes}:${seconds}`
-                }, {
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    }
-                }).then(response => {
-                    if(parseInt(response.data) === 1){
-                        this.loadCalendar()
-                        this.displayDataOnDom()
-                    } else {
-                        console.log('Lỗi gì đó... ' + response.data)
-                        $(e.target).removeClass('pending-checkout').text('Check out')
-                    }
-                }).catch(error => {
-                    console.log(`Error checkin: ${error}`)
-                })
-            }
         }
     }
 }

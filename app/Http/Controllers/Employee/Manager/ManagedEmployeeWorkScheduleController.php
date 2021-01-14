@@ -25,6 +25,9 @@ class ManagedEmployeeWorkScheduleController extends Controller
     public function getDetailWorkScheduleOfEmployee($id)
     {
         $month = Carbon::now()->month;
+        if (strlen((string)$month) == 1) {
+            $month = "0$month";
+        }
         $year = Carbon::now()->year;
         $managerId = auth('employees')->user()->id;
 
@@ -59,6 +62,8 @@ class ManagedEmployeeWorkScheduleController extends Controller
 
         /* Lấy ra các ngày nghỉ có phép */
         $requestsForLeave = $this->requestModel->getApprovedRequests($id);
+//        dd($requestsForLeave);
+
         $authorizedLeaves = [];
         foreach ($requestsForLeave as $request) {
             $dayOffAt = Carbon::parse($request->start_at)->format('Y-m-d');
@@ -84,21 +89,60 @@ class ManagedEmployeeWorkScheduleController extends Controller
             $timeDateAt = $authorizedLeave['start_at']['time'];
             $timeDateEnd = $authorizedLeave['end_at']['time'];
 
-            for ($day = $dateAt; $day <= $dateEnd; $day++) {
-                if ($day == $dateAt) {
-                    if (Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
-                        $day++;
+            if (Carbon::parse($dateEnd)->month == Carbon::parse($dateAt)->month) {
+                for ($day = $dateAt; $day <= $dateEnd; $day++) {
+                    if ($day == $dateAt) {
+                        if (Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
+                            $day++;
+                        }
                     }
-                }
-                if ($day == $dateEnd) {
-                    if (Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
-                        break;
+                    if ($day == $dateEnd) {
+                        if (Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
+                            break;
+                        }
                     }
+                    $detailAuthorizedLeaves[] = $day;
                 }
-                $detailAuthorizedLeaves[] = $day;
+            } else if (Carbon::parse($dateEnd)->month > Carbon::parse($dateAt)->month) {
+                $yearDateEnd = (string)Carbon::parse($dateEnd)->year;
+                $monthDateEnd = (string)Carbon::parse($dateEnd)->month;
+                if (strlen((string)$monthDateEnd) == 1) {
+                    $monthDateEnd = "0$monthDateEnd";
+                }
+                $dateAt = "$yearDateEnd-$monthDateEnd-01";
+
+                for ($day = $dateAt; $day <= $dateEnd; $day++) {
+                    if ($day == $dateAt) {
+                        if (Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
+                            $day++;
+                        }
+                    }
+                    if ($day == $dateEnd) {
+                        if (Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
+                            break;
+                        }
+                    }
+                    $detailAuthorizedLeaves[] = $day;
+                }
             }
         }
-//        dd($authorizedLeaves, $detailAuthorizedLeaves);
+
+        $collectionDetailAuthorizedLeaves = collect($detailAuthorizedLeaves);
+        $detailAuthorizedLeavesAtNow = $collectionDetailAuthorizedLeaves->filter(function ($value, $key) {
+            $dayOffMonth = Carbon::parse($value)->month;
+            $dayOffYear = Carbon::parse($value)->year;
+
+            $month = Carbon::now()->month;
+            if (strlen((string)$month) == 1) {
+                $month = "0$month";
+            }
+            $year = Carbon::now()->year;
+
+            if ($dayOffMonth == $month && $dayOffYear == $year) {
+                return $value;
+            }
+        });
+//        dd($authorizedLeaves, $detailAuthorizedLeavesAtNow);
         /* Lấy ra các ngày nghỉ không phép */
         $unauthorizedLeaves = array_diff($days, $workDays, $daysWeekend, $detailAuthorizedLeaves);
         $collectionUnauthorizedLeaves = collect($unauthorizedLeaves);
@@ -116,7 +160,7 @@ class ManagedEmployeeWorkScheduleController extends Controller
             'totalEmployeeWorkTime' => $totalEmployeeWorkTime,
             'workDays' => $employeeWorkSchedulesInMonth,
             'authorizedLeaves' => $authorizedLeaves,
-            'detailAuthorizedLeaves' => $detailAuthorizedLeaves,
+            'detailAuthorizedLeaves' => $detailAuthorizedLeavesAtNow,
             'unauthorizedLeaves' => $unauthorizedLeaves,
         ];
         session()->put('data_timesheet', $data);

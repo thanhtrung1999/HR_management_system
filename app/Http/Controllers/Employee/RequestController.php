@@ -52,7 +52,7 @@ class RequestController extends Controller
 
     public function storeAPI(Request $request)
     {
-//        $this->requestModel->createRequestApi($request);
+        $this->requestModel->createRequestApi($request);
         return response()->json('Tạo request thành công');
     }
 

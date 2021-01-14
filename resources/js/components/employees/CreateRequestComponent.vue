@@ -11,12 +11,12 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="start-at">Start at</label>
-                        <datetime format="YYYY-MM-DD H:i" v-model="startAt" type="text" :class="{ 'error-input': $v.startAt.$error }" id="start-at" name="start_at"></datetime>
+                        <datetime format="YYYY-MM-DD H:i" v-model="startAt" type="text" :class="{ 'error-input': $v.startAt.$error }" :disabledDates="disabledDates" id="start-at" name="start_at"></datetime>
                         <span v-if="!$v.startAt.required && $v.startAt.$dirty" class="text-danger error">Start At is required!</span>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="end-at">End at</label>
-                        <datetime format="YYYY-MM-DD H:i" v-model="endAt" type="text" :class="{ 'error-input': $v.endAt.$error }" id="end-at" name="end_at"></datetime>
+                        <datetime format="YYYY-MM-DD H:i" v-model="endAt" type="text" :class="{ 'error-input': $v.endAt.$error }" :disabledDates="disabledDates" id="end-at" name="end_at"></datetime>
                         <span v-if="!$v.endAt.required && $v.endAt.$dirty" class="text-danger error">End At is required!</span>
                     </div>
                 </div>
@@ -38,7 +38,10 @@ export default {
     data: () => ({
         contentRequest: '',
         startAt: '',
-        endAt: ''
+        endAt: '',
+        disabledDates: {
+            to: new Date(Date.now() - 8640000)
+        }
     }),
     validations: {
         contentRequest: {
