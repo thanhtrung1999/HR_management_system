@@ -24,11 +24,8 @@ class ManagedEmployeeWorkScheduleController extends Controller
 
     public function getDetailWorkScheduleOfEmployee($id)
     {
-        $month = Carbon::now()->month;
-        if (strlen((string)$month) == 1) {
-            $month = "0$month";
-        }
-        $year = Carbon::now()->year;
+        $month = Carbon::now()->format('m');
+        $year = Carbon::now()->format('Y');
         $managerId = auth('employees')->user()->id;
 
         /* Lấy ra các ngày trong tháng */
@@ -36,9 +33,7 @@ class ManagedEmployeeWorkScheduleController extends Controller
         $days = [];
         for ($i = 1; $i <= $daysInMonth; $i++) {
             $date = (string)$i;
-            if (strlen($date) == 1) {
-                $date = "0$date";
-            }
+            $date = strlen($date) == 1 ? str_pad($date, 2, "0", STR_PAD_LEFT) : $date;
             $days[] = "$year-$month-$date";
         }
 
@@ -91,79 +86,48 @@ class ManagedEmployeeWorkScheduleController extends Controller
 
             if (Carbon::parse($dateEnd)->month == Carbon::parse($dateAt)->month) {
                 for ($day = $dateAt; $day <= $dateEnd; $day++) {
-                    if ($day == $dateAt) {
-                        if (Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
-                            $day++;
-                        }
+                    if ($day == $dateAt && Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
+                        $day++;
                     }
-                    if ($day == $dateEnd) {
-                        if (Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
-                            break;
-                        }
+                    if ($day == $dateEnd && Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
+                        break;
                     }
                     $detailAuthorizedLeaves[] = $day;
                 }
             } else if (Carbon::parse($dateEnd)->month > Carbon::parse($dateAt)->month) {
-                $yearDateAt = (string)Carbon::parse($dateAt)->year;
-                $monthDateAt = (string)Carbon::parse($dateAt)->month;
-                $yearDateEnd = (string)Carbon::parse($dateEnd)->year;
-                $monthDateEnd = (string)Carbon::parse($dateEnd)->month;
+                $yearDateAt = Carbon::parse($dateAt)->format('Y');
+                $monthDateAt = Carbon::parse($dateAt)->format('m');
+                $yearDateEnd = Carbon::parse($dateEnd)->format('Y');
+                $monthDateEnd = Carbon::parse($dateEnd)->format('m');
 
-                if (strlen((string)$monthDateAt) == 1) {
-                    $monthDateAt = "0$monthDateAt";
-                }
-                if (strlen((string)$monthDateEnd) == 1) {
-                    $monthDateEnd = "0$monthDateEnd";
-                }
                 $dateEndCurrentMonth = "$yearDateAt-$monthDateAt-$daysInMonth";
                 $dateAtNextMonth = "$yearDateEnd-$monthDateEnd-01";
 
                 for ($day = $dateAt; $day <= $dateEndCurrentMonth; $day++) {
-                    if ($day == $dateAt) {
-                        if (Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
-                            $day++;
-                        }
+                    if ($day == $dateAt && Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
+                        $day++;
                     }
-                    if ($day == $dateEndCurrentMonth) {
-                        if (Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
-                            break;
-                        }
-                    }
-                    $detailAuthorizedLeaves[] = $day;
-                }
-                for ($day = $dateAtNextMonth; $day <= $dateEnd; $day++) {
-                    if ($day == $dateAtNextMonth) {
-                        if (Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
-                            $day++;
-                        }
-                    }
-                    if ($day == $dateEnd) {
-                        if (Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
-                            break;
-                        }
+                    if ($day == $dateEndCurrentMonth && Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
+                        break;
                     }
                     $detailAuthorizedLeaves[] = $day;
                 }
             }
         }
-//        dd($detailAuthorizedLeaves);
 
         $collectionDetailAuthorizedLeaves = collect($detailAuthorizedLeaves);
         $detailAuthorizedLeavesAtNow = $collectionDetailAuthorizedLeaves->filter(function ($value, $key) {
-            $dayOffMonth = Carbon::parse($value)->month;
-            $dayOffYear = Carbon::parse($value)->year;
+            $dayOffMonth = Carbon::parse($value)->format('m');
+            $dayOffYear = Carbon::parse($value)->format('Y');
 
-            $month = Carbon::now()->month;
-            if (strlen((string)$month) == 1) {
-                $month = "0$month";
-            }
-            $year = Carbon::now()->year;
+            $month = Carbon::now()->format('m');
+            $year = Carbon::now()->format('Y');
 
             if ($dayOffMonth == $month && $dayOffYear == $year) {
                 return $value;
             }
         })->all();
-//        dd($authorizedLeaves, $detailAuthorizedLeavesAtNow);
+//        dd($detailAuthorizedLeaves, $detailAuthorizedLeavesAtNow);
         /* Lấy ra các ngày nghỉ không phép */
         $unauthorizedLeaves = array_diff($days, $workDays, $daysWeekend, $detailAuthorizedLeavesAtNow);
         $collectionUnauthorizedLeaves = collect($unauthorizedLeaves);

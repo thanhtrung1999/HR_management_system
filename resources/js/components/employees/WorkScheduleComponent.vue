@@ -5,11 +5,12 @@
             <h3 id="monthAndYear"></h3>
             <div class="btn-in-out">
                 <button class="btn btn-secondary" onclick="atNow()" @click="displayDataOnDom">Today</button>
-                <button v-if="this.$store.state.WorkSchedule.isCheckinToday === false"
-                        class="btn btn-secondary ml-2 btn-check-in" @click="checkIn">
+                <button v-if="!isCheckinToday"
+                        class="btn btn-secondary ml-2 btn-check-in"
+                        @click="checkIn">
                     Check in
                 </button>
-                <button v-if="this.$store.state.WorkSchedule.isCheckinToday === true && this.$store.state.WorkSchedule.isCheckoutToday === false"
+                <button v-else-if="isCheckinToday && !isCheckoutToday"
                         class="float-right btn btn-warning ml-2 btn-check-out"
                         @click="checkOut">
                     Check out
@@ -50,6 +51,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import {store} from "../../store";
 const baseUrl = $('base').attr('href')
 const today = new Date()
 const date = today.getDate()
@@ -69,8 +72,15 @@ export default {
     created() {
         this.loadCalendar()
     },
+    computed: {
+        ...mapState({
+            isCheckinToday: state => state.WorkSchedule.isCheckinToday,
+            isCheckoutToday: state => state.WorkSchedule.isCheckoutToday
+        })
+    },
     methods: {
         loadCalendar() {
+            $('body div.wrapper').before('<div class="loader loader-default is-active"></div>');
             let uri = `${baseUrl}api/load-calendar`
             this.axios.post(uri,{
                 employeeId: this.$attrs.employeeid
@@ -80,10 +90,12 @@ export default {
                 },
                 responseType: 'json'
             }).then(response => {
+                $('div.loader').remove()
                 console.log(response);
                 this.$store.dispatch('updateWorkSchedule', response.data)
                 this.displayDataOnDom();
             }).catch(error => {
+                $('div.loader').remove()
                 console.log(`Error: ${error}`)
             })
         },
@@ -108,6 +120,7 @@ export default {
                 if(parseInt(response.data) === 1){
                     this.loadCalendar()
                     this.displayDataOnDom()
+                    $(e.target).removeClass('pending-checkin').text('Check out')
                 } else {
                     console.log('Lỗi gì đó... ' + response.data)
                     $(e.target).removeClass('pending-checkin').text('Check in')
@@ -135,6 +148,7 @@ export default {
                     if(parseInt(response.data) === 1){
                         this.loadCalendar()
                         this.displayDataOnDom()
+                        $(e.target).removeClass('pending-checkout').text('')
                     } else {
                         console.log('Lỗi gì đó... ' + response.data)
                         $(e.target).removeClass('pending-checkout').text('Check out')
