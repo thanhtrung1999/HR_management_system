@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Employee;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\EditProfileRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -36,8 +37,8 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param EditProfileRequest $request
+     * @param int $id
      * @return RedirectResponse
      */
     public function update(EditProfileRequest $request, $id)

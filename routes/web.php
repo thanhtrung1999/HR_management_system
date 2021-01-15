@@ -6,7 +6,7 @@ use App\Http\Controllers\Employee\Manager\ManagedEmployeeWorkScheduleController;
 use App\Http\Controllers\Employee\RequestController;
 use App\Http\Controllers\Employee\WorkScheduleController;
 use App\Http\Controllers\MailController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Employee\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\Root\DepartmentController;
 use Illuminate\Support\Facades\Route;

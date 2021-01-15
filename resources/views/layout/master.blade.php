@@ -37,12 +37,12 @@
     @include('layout.sidebar')
     <div class="content-wrapper">
         @if(session()->has('error'))
-            <div class="alert alert-danger m-2">
+            <div class="alert alert-danger m-2 d-inline-block">
                 <h5 style="margin: 0">{{session('error')}}</h5>
             </div>
         @endif
         @if(session()->has('success'))
-            <div class="alert alert-success m-2">
+            <div class="alert alert-success m-2 d-inline-block">
                 <h5 style="margin: 0">{{session('success')}}</h5>
             </div>
         @endif
@@ -67,15 +67,15 @@
 <!-- ./wrapper -->
 
 <script src="/js/app.js"></script>
-<!-- jQuery -->
+{{--<!-- jQuery -->--}}
 {{--<script src="{{asset('js/jquery.min.js')}}"></script>--}}
-<!-- jQuery UI 1.12.1 -->
-{{--<script src="{{asset('js/jquery-ui.min.js')}}"></script>--}}
+{{--<!-- jQuery UI 1.12.1 --> --}}
+<script src="{{asset('js/jquery-ui.min.js')}}"></script>
 <!-- Font Awesome 6 -->
 <script src="https://kit.fontawesome.com/5efd05f2e8.js" crossorigin="anonymous"></script>
-<!-- Bootstrap 4 -->
+{{--<!-- Bootstrap 4 -->--}}
 {{--<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>--}}
-<!-- Bootstrap 3.3.7 -->
+{{--<!-- Bootstrap 3.3.7 -->--}}
 {{--<script src="{{asset('js/bootstrap.min.js')}}"></script>--}}
 <!-- DataTables -->
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>

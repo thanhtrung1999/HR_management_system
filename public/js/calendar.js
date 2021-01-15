@@ -39,7 +39,6 @@ monthAndYear = document.getElementById("monthAndYear");
 showCalendar(currentMonth, currentYear);
 
 
-
 function next() {
   currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
   currentMonth = (currentMonth + 1) % 12;
@@ -62,6 +61,8 @@ function jump() {
 }
 
 function atNow(){
+    currentYear = today.getFullYear();
+    currentMonth = today.getMonth();
     showCalendar(currentMonth, currentYear);
     //loadCalendar();
 }

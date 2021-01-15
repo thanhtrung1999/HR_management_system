@@ -5,7 +5,15 @@
             <h3 id="monthAndYear"></h3>
             <div class="btn-in-out">
                 <button class="btn btn-secondary" onclick="atNow()" @click="displayDataOnDom">Today</button>
-                <button-checkin @checkIn="handleCheckIn"/>
+                <button v-if="this.$store.state.WorkSchedule.isCheckinToday === false"
+                        class="btn btn-secondary ml-2 btn-check-in" @click="checkIn">
+                    Check in
+                </button>
+                <button v-if="this.$store.state.WorkSchedule.isCheckinToday === true && this.$store.state.WorkSchedule.isCheckoutToday === false"
+                        class="float-right btn btn-warning ml-2 btn-check-out"
+                        @click="checkOut">
+                    Check out
+                </button>
             </div>
         </div>
 
@@ -82,7 +90,7 @@ export default {
         displayDataOnDom() {
             this.$store.commit('displayDataOnDom')
         },
-        handleCheckIn(e) {
+        checkIn(e) {
             console.log(`${baseUrl}check-in\n${today}`)
             $(e.target).addClass('pending-checkin').text("Pending...")
 
@@ -107,6 +115,34 @@ export default {
             }).catch(error => {
                 console.log(`Error checkin: ${error}`)
             })
+        },
+        checkOut(e) {
+            let r = confirm('Do you want to check-out now?')
+            if (r === true) {
+                console.log(`${baseUrl}check-out\n${today}`)
+                $(e.target).addClass('pending-checkout').text("Pending...")
+
+                this.axios.post(`${baseUrl}api/check-out`, {
+                    employeeId: this.$attrs.employeeid,
+                    today: today,
+                    day: `${year}-${month}-${date}`,
+                    time: `${hour}:${minutes}:${seconds}`
+                }, {
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }
+                }).then(response => {
+                    if(parseInt(response.data) === 1){
+                        this.loadCalendar()
+                        this.displayDataOnDom()
+                    } else {
+                        console.log('Lỗi gì đó... ' + response.data)
+                        $(e.target).removeClass('pending-checkout').text('Check out')
+                    }
+                }).catch(error => {
+                    console.log(`Error checkout: ${error}`)
+                })
+            }
         }
     }
 }

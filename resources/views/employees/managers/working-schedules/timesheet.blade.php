@@ -59,13 +59,13 @@
                 }
                 @endphp
                 <td>
-                    <span class="checkin-time">{{$checkinTime}}</span>
-                    <span class="authorized-leave">{{$isAuthorizedLeave}}</span>
+                    <span class="checkin-time">{{$checkinTime}} </span>
+                    <span class="authorized-leave">{{$isAuthorizedLeave}} </span>
                     <span class="unauthorized-leave">{{$isUnauthorizedLeave}}</span>
                 </td>
                 <td>
-                    <span class="checkout-time">{{$checkoutTime}}</span>
-                    <span class="authorized-leave">{{$isAuthorizedLeave}}</span>
+                    <span class="checkout-time">{{$checkoutTime}} </span>
+                    <span class="authorized-leave">{{$isAuthorizedLeave}} </span>
                     <span class="unauthorized-leave">{{$isUnauthorizedLeave}}</span>
                 </td>
             </tr>

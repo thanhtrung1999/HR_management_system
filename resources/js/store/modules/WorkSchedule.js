@@ -1,5 +1,7 @@
 const state = {
-    data: []
+    data: [],
+    isCheckinToday: false,
+    isCheckoutToday: false
 }
 const getters = {
 
@@ -26,12 +28,12 @@ const mutations = {
 
             let tdElementDay = $(`.table-calendar#calendar td[data-date="${date}"][data-month="${month}"][data-year="${year}"]`);
             let today = new Date();
-            if(isCheckInToday(today.getDate(), today.getMonth()+1, today.getFullYear(), date, month, year)){
+            if(isCheckinToday(today.getDate(), today.getMonth()+1, today.getFullYear(), date, month, year)){
                 if (subData.checkin_time !== null){
-                    $('.calendar-header .btn-in-out .btn-check-in').replaceWith('<button class="float-right btn btn-warning ml-2 btn-check-out">Check out</button>');
+                    state.isCheckinToday = true;
                 }
                 if (subData.checkout_time !== null){
-                    $('.calendar-header .btn-in-out .btn-check-out').remove();
+                    state.isCheckoutToday = true;
                 }
             }
 
@@ -79,7 +81,7 @@ const actions = {
     }
 }
 
-const isCheckInToday = (date, month, year, checkinDate, checkinMonth, checkinYear) => {
+const isCheckinToday = (date, month, year, checkinDate, checkinMonth, checkinYear) => {
     return date === checkinDate && month === checkinMonth && year === checkinYear;
 }
 

@@ -1,5 +1,5 @@
 :root{
-  --font-size-main: 13px;
+  --font-size-main: 14px;
   --main-color: #0a0a0a;
   --color-white: #f5f5f5;
   --color-red: #f81610;
@@ -56,16 +56,19 @@ html, body{
     top: 0;
     right: 0;
 }
+.table-calendar td{
+    height: 9.5rem;
+}
 div.working-times-in-out{
     margin-top: .8rem;
 }
 div.working-times-in-out p{
     position: absolute;
     margin: 0;
-    font-size: 1.1rem;
-    border-radius: 4px;
+    font-size: 1rem;
+    border-radius: 999px;
     background-color: #47ffc0;
-    padding: 4px;
+    padding: 0 8px;
 }
 div.working-times-in-out p.checkout-time {
     position: relative!important;
