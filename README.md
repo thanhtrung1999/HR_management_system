@@ -12,8 +12,9 @@ Make sure your computer, laptop has downloaded and installed <a href="https://do
 Access the root directory of the project, run command line:
 1. docker-compose up
 2. composer require laravel/ui
-3. npm install
-4. npm run dev / npm run watch
+3. php artisan ui vue
+4. npm install
+5. npm run dev / npm run watch
 
 ## About Laravel
 
