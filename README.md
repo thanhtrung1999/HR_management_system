@@ -7,6 +7,14 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Installation
+Make sure your computer, laptop has downloaded and installed <a href="https://docs.docker.com/get-docker/">Docker</a>, <a href="https://getcomposer.org/download/">Composer</a> and <a href="https://nodejs.org/en/download/">NodeJS</a>. <br>
+Access the root directory of the project, run command line:
+1. docker-compose up
+2. composer require laravel/ui
+3. npm install
+4. npm run dev / npm run watch
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
