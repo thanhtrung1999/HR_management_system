@@ -2,6 +2,7 @@
 @section('title', 'Lịch làm việc')
 @section('stylesheet')
     <link rel="stylesheet" href="{{asset('css/calendar.css')}}" />
+    <link rel="stylesheet" href="{{asset('css/css-loader.css')}}">
 @endsection
 @section('active-link-calendar', 'active')
 @section('breadcrumb')
