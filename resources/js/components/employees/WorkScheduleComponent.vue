@@ -52,7 +52,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import {store} from "../../store";
+import { axiosModule } from '../../modules/axios'
+
 const baseUrl = $('base').attr('href')
 const today = new Date()
 const date = today.getDate()
@@ -61,6 +62,10 @@ const year = today.getFullYear()
 const hour = today.getHours()
 const minutes = today.getMinutes()
 const seconds = today.getSeconds()
+
+axiosModule.config = {
+    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+}
 
 export default {
     name: "WorkScheduleComponent",
@@ -81,21 +86,22 @@ export default {
     methods: {
         loadCalendar() {
             $('body div.wrapper').before('<div class="loader loader-default is-active"></div>');
-            let uri = `${baseUrl}api/load-calendar`
-            this.axios.post(uri,{
+
+            axiosModule.baseUrl = `${baseUrl}api/load-calendar`
+            axiosModule.data = {
                 employeeId: this.$attrs.employeeid
-            },{
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                },
-                responseType: 'json'
-            }).then(response => {
+            }
+            console.log(axiosModule)
+
+            axiosModule.methods.post(() => {
                 $('div.loader').remove()
+                const response = axiosModule.response
                 console.log(response);
                 this.$store.dispatch('updateWorkSchedule', response.data)
                 this.displayDataOnDom();
-            }).catch(error => {
+            }, () => {
                 $('div.loader').remove()
+                const error = axiosModule.error
                 console.log(`Error: ${error}`)
             })
         },
@@ -106,16 +112,15 @@ export default {
             console.log(`${baseUrl}check-in\n${today}`)
             $(e.target).addClass('pending-checkin').text("Pending...")
 
-            this.axios.post(`${baseUrl}api/check-in`, {
+            axiosModule.baseUrl = `${baseUrl}api/check-in`
+            axiosModule.data = {
                 employeeId: this.$attrs.employeeid,
                 today: today,
                 day: `${year}-${month}-${date}`,
                 time: `${hour}:${minutes}:${seconds}`
-            }, {
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                }
-            }).then(response => {
+            }
+            axiosModule.methods.post(() => {
+                const response = axiosModule.response
                 console.log(response)
                 if(parseInt(response.data) === 1){
                     this.loadCalendar()
@@ -125,7 +130,8 @@ export default {
                     console.log('Lỗi gì đó... ' + response.data)
                     $(e.target).removeClass('pending-checkin').text('Check in')
                 }
-            }).catch(error => {
+            }, () => {
+                const error = axiosModule.error
                 console.log(`Error checkin: ${error}`)
             })
         },
@@ -135,16 +141,15 @@ export default {
                 console.log(`${baseUrl}check-out\n${today}`)
                 $(e.target).addClass('pending-checkout').text("Pending...")
 
-                this.axios.post(`${baseUrl}api/check-out`, {
+                axiosModule.baseUrl = `${baseUrl}api/check-out`
+                axiosModule.data = {
                     employeeId: this.$attrs.employeeid,
                     today: today,
                     day: `${year}-${month}-${date}`,
                     time: `${hour}:${minutes}:${seconds}`
-                }, {
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    }
-                }).then(response => {
+                }
+                axiosModule.methods.post(() => {
+                    const response = axiosModule.response
                     if(parseInt(response.data) === 1){
                         this.loadCalendar()
                         this.displayDataOnDom()
@@ -153,7 +158,8 @@ export default {
                         console.log('Lỗi gì đó... ' + response.data)
                         $(e.target).removeClass('pending-checkout').text('Check out')
                     }
-                }).catch(error => {
+                }, () => {
+                    const error = axiosModule.error
                     console.log(`Error checkout: ${error}`)
                 })
             }

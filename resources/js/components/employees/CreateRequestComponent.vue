@@ -32,6 +32,7 @@
 <script>
 import { required, alphaNum } from 'vuelidate/lib/validators'
 import datetime from 'vuejs-datetimepicker'
+import { axiosModule } from "../../modules/axios";
 
 export default {
     name: "CreateRequestComponent",
@@ -56,24 +57,27 @@ export default {
     },
     methods: {
         onSubmit() {
+            const baseUrl = $('base').attr('href')
             this.$v.$touch();
 
             if (this.$v.$invalid) {
                 console.log(`Content: ${this.contentRequest}, Start at: ${this.startAt}, End at: ${this.endAt}`)
             } else {
-                $('body div.wrapper').before('<div class="loader loader-border is-active" data-text="Creating a new request..." data-blink></div>');
-                const uri = `http://localhost:9999/api/employee/requests/create`;
-                this.axios.post(uri, {
+                $('body div.wrapper').before('<div class="loader loader-border is-active" data-text="Creating a new request..." data-blink></div>')
+
+                axiosModule.baseUrl = `${baseUrl}api/employee/requests/create`
+                axiosModule.data = {
                     content: this.contentRequest,
                     startAt: this.startAt,
                     endAt: this.endAt,
                     employee: this.$attrs.employee,
                     employeeOfDepartment: this.$attrs.employeeofdepartment,
                     manager: this.$attrs.manager
-                }).then(response => {
+                }
+                axiosModule.methods.post(() => {
                     $('body').remove('div.loader')
                     window.location = `http://localhost:9999/employee/requests`
-                });
+                })
             }
         }
     },
