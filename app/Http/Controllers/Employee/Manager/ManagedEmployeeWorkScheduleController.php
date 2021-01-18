@@ -33,13 +33,13 @@ class ManagedEmployeeWorkScheduleController extends Controller
         $days = [];
         for ($i = 1; $i <= $daysInMonth; $i++) {
             $date = (string)$i;
-            $date = strlen($date) == 1 ? str_pad($date, 2, "0", STR_PAD_LEFT) : $date;
+            $date = str_pad($date, 2, "0", STR_PAD_LEFT);
             $days[] = "$year-$month-$date";
         }
 
         /* Lấy ra các ngày cuối tuần trong tháng */
         $collectionDays = collect($days);
-        $filteredDayWeekend = $collectionDays->filter(function ($value, $key) {
+        $filteredDayWeekend = $collectionDays->filter(function ($value) {
             $day = Carbon::parse($value);
             return $day->isSaturday() || $day->isSunday();
         });
@@ -50,86 +50,29 @@ class ManagedEmployeeWorkScheduleController extends Controller
 
         /* Lấy ra các ngày làm việc trong tháng của nhân viên */
         $employeeWorkSchedulesInMonth = $this->workingDaysModel->getEmployeeWorkSchedulesInMonth($id, $month, $year);
-        $workDays = [];
-        foreach ($employeeWorkSchedulesInMonth as $workDay) {
-            $workDays[] = $workDay->working_on_day;
-        }
+        $workDays = $this->workingDaysModel->getWorkDays($employeeWorkSchedulesInMonth);
 
         /* Lấy ra các ngày nghỉ có phép */
-        $requestsForLeave = $this->requestModel->getApprovedRequests($id);
-//        dd($requestsForLeave);
+        $approvedRequests = $this->requestModel->getApprovedRequests($id);
+        $daysOffInterval = $this->workingDaysModel->getDaysOffInterval($approvedRequests);
+        $daysOff = $this->workingDaysModel->getDaysOff($daysOffInterval, $daysInMonth);
 
-        $authorizedLeaves = [];
-        foreach ($requestsForLeave as $request) {
-            $dayOffAt = Carbon::parse($request->start_at)->format('Y-m-d');
-            $dayOffEnd = Carbon::parse($request->end_at)->format('Y-m-d');
-            $timeDayOffAt = Carbon::parse($request->start_at)->format('H:i');
-            $timeDayOffEnd = Carbon::parse($request->end_at)->format('H:i');
-            $authorizedLeaves[] = [
-                'start_at' => [
-                    'date' => $dayOffAt,
-                    'time' => $timeDayOffAt
-                ],
-                'end_at' => [
-                    'date' => $dayOffEnd,
-                    'time' => $timeDayOffEnd
-                ]
-            ];
-        }
-//        dd($authorizedLeaves);
-        $detailAuthorizedLeaves = [];
-        foreach ($authorizedLeaves as $authorizedLeave) {
-            $dateAt = $authorizedLeave['start_at']['date'];
-            $dateEnd = $authorizedLeave['end_at']['date'];
-            $timeDateAt = $authorizedLeave['start_at']['time'];
-            $timeDateEnd = $authorizedLeave['end_at']['time'];
-
-            if (Carbon::parse($dateEnd)->month == Carbon::parse($dateAt)->month) {
-                for ($day = $dateAt; $day <= $dateEnd; $day++) {
-                    if ($day == $dateAt && Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
-                        $day++;
-                    }
-                    if ($day == $dateEnd && Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
-                        break;
-                    }
-                    $detailAuthorizedLeaves[] = $day;
-                }
-            } else if (Carbon::parse($dateEnd)->month > Carbon::parse($dateAt)->month) {
-                $yearDateAt = Carbon::parse($dateAt)->format('Y');
-                $monthDateAt = Carbon::parse($dateAt)->format('m');
-                $yearDateEnd = Carbon::parse($dateEnd)->format('Y');
-                $monthDateEnd = Carbon::parse($dateEnd)->format('m');
-
-                $dateEndCurrentMonth = "$yearDateAt-$monthDateAt-$daysInMonth";
-                $dateAtNextMonth = "$yearDateEnd-$monthDateEnd-01";
-
-                for ($day = $dateAt; $day <= $dateEndCurrentMonth; $day++) {
-                    if ($day == $dateAt && Carbon::parse($day . ' ' . $timeDateAt)->isAfter("$day 17:29:59")) {
-                        $day++;
-                    }
-                    if ($day == $dateEndCurrentMonth && Carbon::parse($day . ' ' . $timeDateEnd)->isBefore("$day 08:30:00")) {
-                        break;
-                    }
-                    $detailAuthorizedLeaves[] = $day;
-                }
-            }
-        }
-
-        $collectionDetailAuthorizedLeaves = collect($detailAuthorizedLeaves);
-        $detailAuthorizedLeavesAtNow = $collectionDetailAuthorizedLeaves->filter(function ($value, $key) {
-            $dayOffMonth = Carbon::parse($value)->format('m');
-            $dayOffYear = Carbon::parse($value)->format('Y');
+        $collectionDaysOff = collect($daysOff);
+        $daysOffInCurrentMonth = $collectionDaysOff->filter(function ($value, $key) {
+            $daysOffMonth = Carbon::parse($value)->format('m');
+            $daysOffYear = Carbon::parse($value)->format('Y');
 
             $month = Carbon::now()->format('m');
             $year = Carbon::now()->format('Y');
 
-            if ($dayOffMonth == $month && $dayOffYear == $year) {
+            if ($daysOffMonth == $month && $daysOffYear == $year) {
                 return $value;
             }
         })->all();
-//        dd($detailAuthorizedLeaves, $detailAuthorizedLeavesAtNow);
+//        dd($approvedRequests, $daysOffInterval, $daysOff, $daysOffInCurrentMonth);
+
         /* Lấy ra các ngày nghỉ không phép */
-        $unauthorizedLeaves = array_diff($days, $workDays, $daysWeekend, $detailAuthorizedLeavesAtNow);
+        $unauthorizedLeaves = array_diff($days, $workDays, $daysWeekend, $daysOffInCurrentMonth);
         $collectionUnauthorizedLeaves = collect($unauthorizedLeaves);
         $filteredUnauthorizedLeaves = $collectionUnauthorizedLeaves->filter(function ($value, $key) {
             $day = Carbon::parse($value);
@@ -137,14 +80,15 @@ class ManagedEmployeeWorkScheduleController extends Controller
         });
         $unauthorizedLeaves = $filteredUnauthorizedLeaves->all();
 
+        /* Tạo session lưu data */
         $data = [
             'days' => $days,
             'month' => $month,
             'year' => $year,
             'totalEmployeeWorkTime' => $totalEmployeeWorkTime,
             'workDays' => $employeeWorkSchedulesInMonth,
-            'authorizedLeaves' => $authorizedLeaves,
-            'detailAuthorizedLeaves' => $detailAuthorizedLeavesAtNow,
+            'daysOffInterval' => $daysOffInterval,
+            'detailAuthorizedLeaves' => $daysOffInCurrentMonth,
             'unauthorizedLeaves' => $unauthorizedLeaves,
         ];
         session()->put('data_timesheet', $data);
