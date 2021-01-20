@@ -8,17 +8,15 @@
                     <textarea name="content" v-model="contentRequest" id="content" rows="6" class="form-control" :class="{'error-input': $v.contentRequest.$error }" style="resize: vertical"></textarea>
                     <span v-if="!$v.contentRequest.required && $v.contentRequest.$dirty" class="text-danger error">Content is required!</span>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="start-at">Start at</label>
-                        <datetime format="YYYY-MM-DD H:i" v-model="startAt" type="text" :class="{ 'error-input': $v.startAt.$error }" :disabledDates="disabledDates" id="start-at" name="start_at"></datetime>
-                        <span v-if="!$v.startAt.required && $v.startAt.$dirty" class="text-danger error">Start At is required!</span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="end-at">End at</label>
-                        <datetime format="YYYY-MM-DD H:i" v-model="endAt" type="text" :class="{ 'error-input': $v.endAt.$error }" :disabledDates="disabledDates" id="end-at" name="end_at"></datetime>
-                        <span v-if="!$v.endAt.required && $v.endAt.$dirty" class="text-danger error">End At is required!</span>
-                    </div>
+                <div class="form-group">
+                    <label for="start-at">Start at</label>
+                    <datetime format="YYYY-MM-DD H:i" v-model="startAt" type="text" :class="{ 'error-input': $v.startAt.$error }" :disabledDates="disabledDates" id="start-at" name="start_at"></datetime>
+                    <span v-if="!$v.startAt.required && $v.startAt.$dirty" class="text-danger error">Start At is required!</span>
+                </div>
+                <div class="form-group">
+                    <label for="end-at">End at</label>
+                    <datetime format="YYYY-MM-DD H:i" v-model="endAt" type="text" :class="{ 'error-input': $v.endAt.$error }" :disabledDates="disabledDates" id="end-at" name="end_at"></datetime>
+                    <span v-if="!$v.endAt.required && $v.endAt.$dirty" class="text-danger error">End At is required!</span>
                 </div>
                 <input type="hidden" name="employee_id" :value="$attrs.employeeid">
                 <div class="form-group">
@@ -33,6 +31,7 @@
 import { required, alphaNum } from 'vuelidate/lib/validators'
 import datetime from 'vuejs-datetimepicker'
 import { axiosModule } from "../../modules/axios";
+import env from "../../routes/env";
 
 export default {
     name: "CreateRequestComponent",
@@ -57,7 +56,6 @@ export default {
     },
     methods: {
         onSubmit() {
-            const baseUrl = $('base').attr('href')
             this.$v.$touch();
 
             if (this.$v.$invalid) {
@@ -65,7 +63,7 @@ export default {
             } else {
                 $('body div.wrapper').before('<div class="loader loader-border is-active" data-text="Creating a new request..." data-blink></div>')
 
-                axiosModule.baseUrl = `${baseUrl}api/employee/requests/create`
+                axiosModule.baseUrl = env.routes.api.createEmployeeRequest
                 axiosModule.data = {
                     content: this.contentRequest,
                     startAt: this.startAt,
@@ -87,7 +85,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.form-create > form {
+    input {
+        min-width: 0;
+    }
+}
 .valid__observer, .valid__provider {
     width: 100%;
 }

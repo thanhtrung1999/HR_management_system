@@ -53,8 +53,8 @@
 <script>
 import { mapState } from 'vuex'
 import { axiosModule } from '../../modules/axios'
+import env from '../../routes/env'
 
-const baseUrl = $('base').attr('href')
 const today = new Date()
 const date = today.getDate()
 const month = today.getMonth()+1
@@ -87,16 +87,14 @@ export default {
         loadCalendar() {
             $('body div.wrapper').before('<div class="loader loader-default is-active"></div>');
 
-            axiosModule.baseUrl = `${baseUrl}api/load-calendar`
+            axiosModule.baseUrl = env.routes.api.loadCalendar
             axiosModule.data = {
                 employeeId: this.$attrs.employeeid
             }
-            console.log(axiosModule)
 
             axiosModule.methods.post(() => {
                 $('div.loader').remove()
                 const response = axiosModule.response
-                console.log(response);
                 this.$store.dispatch('updateWorkSchedule', response.data)
                 this.displayDataOnDom();
             }, () => {
@@ -104,15 +102,17 @@ export default {
                 const error = axiosModule.error
                 console.log(`Error: ${error}`)
             })
+
+            console.log(axiosModule)
         },
         displayDataOnDom() {
             this.$store.commit('displayDataOnDom')
         },
         checkIn(e) {
-            console.log(`${baseUrl}check-in\n${today}`)
+            console.log(env.routes.api.checkIn)
             $(e.target).addClass('pending-checkin').text("Pending...")
 
-            axiosModule.baseUrl = `${baseUrl}api/check-in`
+            axiosModule.baseUrl = env.routes.api.checkIn
             axiosModule.data = {
                 employeeId: this.$attrs.employeeid,
                 today: today,
@@ -121,13 +121,12 @@ export default {
             }
             axiosModule.methods.post(() => {
                 const response = axiosModule.response
-                console.log(response)
                 if(parseInt(response.data) === 1){
                     this.loadCalendar()
                     this.displayDataOnDom()
                     $(e.target).removeClass('pending-checkin').text('Check out')
                 } else {
-                    console.log('Lỗi gì đó... ' + response.data)
+                    alert(response.data)
                     $(e.target).removeClass('pending-checkin').text('Check in')
                 }
             }, () => {
@@ -138,10 +137,10 @@ export default {
         checkOut(e) {
             let r = confirm('Do you want to check-out now?')
             if (r === true) {
-                console.log(`${baseUrl}check-out\n${today}`)
+                console.log(env.routes.api.checkOut)
                 $(e.target).addClass('pending-checkout').text("Pending...")
 
-                axiosModule.baseUrl = `${baseUrl}api/check-out`
+                axiosModule.baseUrl = env.routes.api.checkOut
                 axiosModule.data = {
                     employeeId: this.$attrs.employeeid,
                     today: today,
@@ -155,7 +154,7 @@ export default {
                         this.displayDataOnDom()
                         $(e.target).removeClass('pending-checkout').text('')
                     } else {
-                        console.log('Lỗi gì đó... ' + response.data)
+                        alert(response.data)
                         $(e.target).removeClass('pending-checkout').text('Check out')
                     }
                 }, () => {

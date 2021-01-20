@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const axiosModule = {
     baseUrl: "",
     data: {},
@@ -6,7 +8,7 @@ export const axiosModule = {
     error: null,
     methods: {
         get(handleSuccess, handleError) {
-            this.axios.get(this.baseUrl, this.config)
+            axios.get(axiosModule.baseUrl, axiosModule.config)
                 .then(response => {
                     axiosModule.response = response
                     handleSuccess()
@@ -17,7 +19,7 @@ export const axiosModule = {
                 });
         },
         post(handleSuccess, handleError) {
-            this.axios.post(this.baseUrl, this.data, this.config)
+            axios.post(axiosModule.baseUrl, axiosModule.data, axiosModule.config)
                 .then(response => {
                     axiosModule.response = response
                     handleSuccess()
