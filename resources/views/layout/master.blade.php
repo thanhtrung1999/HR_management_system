@@ -69,7 +69,7 @@
 <script src="/js/app.js"></script>
 {{--<!-- jQuery -->--}}
 {{--<script src="{{asset('js/jquery.min.js')}}"></script>--}}
-{{--<!-- jQuery UI 1.12.1 --> --}}
+<!-- jQuery UI 1.12.1 -->
 <script src="{{asset('js/jquery-ui.min.js')}}"></script>
 <!-- Font Awesome 6 -->
 <script src="https://kit.fontawesome.com/5efd05f2e8.js" crossorigin="anonymous"></script>

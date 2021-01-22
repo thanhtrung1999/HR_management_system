@@ -73,10 +73,16 @@
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="pull-left image">
-                    <img style="width: 3.5rem" src="{{empty(auth('employees')->user()->avatar) ? 'http://www.clker.com/cliparts/d/L/P/X/z/i/no-image-icon-hi.png' : 'images/uploads/'.auth('employees')->user()->avatar}}" class="img-circle" alt="User Image">
+                    <a href="{{ route('profile.index') }}">
+                        <img style="width: 3rem"
+                             src="{{empty(auth('employees')->user()->avatar) ? 'http://www.clker.com/cliparts/d/L/P/X/z/i/no-image-icon-hi.png' : 'images/uploads/'.auth('employees')->user()->avatar}}"
+                             class="img-circle"
+                             alt="User Image"
+                        />
+                    </a>
                 </div>
                 <div class="pull-left info">
-                    <p style="margin-bottom: 4px; color: #ffffff">{{auth('employees')->user()->first_name}} {{auth('employees')->user()->last_name}}</p>
+                    <a href="{{ route('profile.index') }}" style="margin-bottom: 4px; color: #ffffff">{{auth('employees')->user()->first_name}} {{auth('employees')->user()->last_name}}</a>
                     <p style="margin-bottom: 4px; color: #ffffff">{{auth('employees')->user()->email}}</p>
                     <a href="{{$_SERVER['REQUEST_URI']}}"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
