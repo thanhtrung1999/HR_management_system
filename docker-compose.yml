@@ -55,4 +55,4 @@ services:
       - MYSQL_USER=member
       - MYSQL_PASSWORD=member@123
     ports:
-      - "3308:3306"
+      - "3333:3306"
