@@ -10,11 +10,17 @@
 ## Installation
 Make sure your computer, laptop has downloaded and installed <a href="https://docs.docker.com/get-docker/">Docker</a>, <a href="https://getcomposer.org/download/">Composer</a> and <a href="https://nodejs.org/en/download/">NodeJS</a>. <br>
 Access the root directory of the project, run command line:
-1. docker-compose up
-2. composer require laravel/ui
-3. php artisan ui vue
-4. npm install
-5. npm run dev / npm run watch
+1. composer install
+2. docker-compose up
+3. composer require laravel/ui
+4. php artisan ui vue
+5. npm install
+6. npm run dev / npm run watch
+
+Go to <b>http://localhost:9999</b> on your browser to run your application 
+
+Mysql account: root/root@123
+You can use docker to access your database if you already know how to use it, otherwise use any tool that supports connecting to mysql database to access, with port connection is 3333 (for example: MySQL workbench, ...)
 
 ## About Laravel
 
